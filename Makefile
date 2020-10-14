@@ -9,7 +9,6 @@ LDLIBS= `pkg-config --libs sdl gtk+-3.0` -lSDL_image -lm -export-dynamic
 SRC = main.c \
       treatment/treatment.c \
       tools/tools.c  \
-      GTK/gtk.c \
       CharDetection/CharDetection.c 
 
 OBJ= $(SRC:.c=.o)
