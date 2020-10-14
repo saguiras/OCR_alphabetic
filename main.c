@@ -1,3 +1,5 @@
+#include "main.h"
+
 void help()
 {
     printf("   --help  To picture commands\n");
