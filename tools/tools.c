@@ -1,11 +1,15 @@
-/* Classic tools */
+#include <err.h>
+# include <stdlib.h>
+# include <SDL/SDL.h>
+
+
 static inline Uint8* pixelref(SDL_Surface *surf, unsigned x, unsigned y)
 {
     int bpp = surf -> format -> BytesPerPixel;
     return (Uint8*)surf -> pixels + y * surf -> pitch + x * bpp;
 }
 
-Uint32 getpixel(SDL_Surface *surface, unsigned x, unsigned y)
+Uint32 get_pixel(SDL_Surface *surface, unsigned x, unsigned y)
 {
     Uint8 *p = pixelref(surface, x, y);
     switch(surface -> format -> BytesPerPixel) {
@@ -25,7 +29,7 @@ Uint32 getpixel(SDL_Surface *surface, unsigned x, unsigned y)
 }
     
 
-void putpixel(SDL_Surface *surface, unsigned x, unsigned y, Uint32 pixel)
+void put_pixel(SDL_Surface *surface, unsigned x, unsigned y, Uint32 pixel)
 {
     Uint8 *p = pixelref(surface, x, y);
     switch(surface -> format -> BytesPerPixel) {
@@ -52,3 +56,12 @@ void putpixel(SDL_Surface *surface, unsigned x, unsigned y, Uint32 pixel)
         break;
     }
 }
+
+void update_surface(SDL_Surface* screen, SDL_Surface* image)
+{
+    if (SDL_BlitSurface(image, NULL, screen, NULL) < 0)
+        warnx("BlitSurface error: %s\n", SDL_GetError());
+
+    SDL_UpdateRect(screen, 0, 0, image->w, image->h);
+}
+
