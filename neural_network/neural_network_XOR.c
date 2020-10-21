@@ -16,7 +16,10 @@ double init_weight_biais(){
 	return ((double) rand())/((double) RAND_MAX);
 }
 
-void Train_NtWork(SDL_Surface *img, int attempted){
+void XOR(){
+	int epochs = 10000;
+	numTrainingSets = 4;
+
 	static const int numInputs = 2 ; // nb of pixels in the image (16*16)
 	static const int numHiddenNodes = 2; //ASCII 
 	static const int numOutputs = 1; // nb of hiddens level
