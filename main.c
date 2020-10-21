@@ -5,6 +5,7 @@
 #include "SDL/SDL_image.h"
 #include "tools/tools.h"
 #include "treatment/treatment.h"
+#include "CharDetection/CharDetection.h"
 
 void init_sdl()
 {
@@ -86,10 +87,8 @@ int main()
     screen_surface = SDL_SetVideoMode(image_surface->w, image_surface->h, 0, SDL_SWSURFACE|SDL_ANYFORMAT);
 
     // Display the image.
-    display_image(image_surface);
 
     // Wait for a key to be pressed.
-    wait_for_keypressed();
      
     greyscale(image_surface);
 
@@ -97,6 +96,17 @@ int main()
 
     blacknwhite(image_surface);
 
+    ligne_detect(image_surface);
+   
+
+
+
+
+    ligne_coord(image_surface);
+
+    display_image(image_surface);
+
+    wait_for_keypressed();
 
     // Free the image surface.
     SDL_FreeSurface(image_surface);
