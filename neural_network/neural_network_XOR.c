@@ -56,7 +56,7 @@ void XOR(){
 				hiddenLayer[j] = sigmoid(activation);
 			}
 			for (int j=0; j<numOutputs; j++) {
-				double activation=outputLayersBias[j];
+				double activation=outLayersBias[j];
 				for (int k=0; k<numHiddenNodes; k++){
 					activation+=hiddenLayer[k]*outputWeights[k][j];
 				}
@@ -76,13 +76,13 @@ void XOR(){
 				deltaHidden[j] = dError*dSigmoid(hiddenLayer[j]);
 			}
 			for(int j =0; j<numOutputs; j++){
-				outputLayerBias[j] += deltaOutput[j]*lr;
+				outputLayersBias[j] += deltaOutput[j]*lr;
 				for (int k=0; k<numHiddenNodes; k++){
 					outputWeights[k][j]+=hiddenLayer[k]*deltaOutput[j]*lr;
 				}
 			}
 			for (int j=0; j<numHiddenNodes; j++){
-				hiddenLayerBias[j] += deltaHidden[j]*lr;
+				hidenLayerBias[j] += deltaHidden[j]*lr;
 				for(int k=0; k<numInputs; k++){
 					hiddenWeights[k][j]+=training_inputs[i][k]*deltaHidden[j]*lr;
 				}

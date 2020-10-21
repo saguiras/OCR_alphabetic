@@ -8,7 +8,6 @@
 # include <time.h>
 # include <math.h>
 
-
 void XOR();
 double sigmoid(double x);
 double dSigmoid(double x);
