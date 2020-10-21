@@ -18,7 +18,7 @@ double init_weight_biais(){
 
 void XOR(){
 	int epochs = 10000;
-	numTrainingSets = 4;
+	int numTrainingSets = 4;
 
 	static const int numInputs = 2 ; // nb of pixels in the image (16*16)
 	static const int numHiddenNodes = 2; //ASCII 
@@ -48,16 +48,16 @@ void XOR(){
 		shuffle(trainingSetOrder, numTrainingSets);
 
 		for ( int x=0; x<numTrainingSets; x++){
-			int i = trainingSetOrder[X];
+			int i = trainingSetOrder[x];
 			for (int j=0; j<numHiddenNodes; j++){
-				double activation=hiddenLayerBias[j];
+				double activation=hidenLayerBias[j];
 				for (int k=0; k<numInputs; k++){
 					activation+=training_inputs[i][k]*hiddenWeights[k][j];
 				}
-				hiddenLayers[j] = sigmoid(activation);
+				hiddenLayer[j] = sigmoid(activation);
 			}
 			for (int j=0; j<numOutputs; j++) {
-				double activation=outputsLayersBias[j];
+				double activation=outputLayersBias[j];
 				for (int k=0; k<numHiddenNodes; k++){
 					activation+=hiddenLayers[k]*outputWeights[k][j];
 				}
@@ -69,7 +69,7 @@ void XOR(){
 				deltaOutput[j] = dError*dSigmoid(outputLayer[j]);
 			}
 			double deltaHidden[numHiddenNodes];
-			for (int j=0; j<numHiddensNodes; j++){
+			for (int j=0; j<numHiddenNodes; j++){
 				double dError = 0.0f;
 				for(int k=0; k<numOutputs; k++){
 					dError+=deltaOutput[k]*outputWeights[j][k];
@@ -77,13 +77,13 @@ void XOR(){
 				deltaHidden[j] = dError*dSigmoid(hiddenLayer[j]);
 			}
 			for(int j =0; j<numOutputs; j++){
-				outputLayerBias[j] += deltaOutput[j]*lr;
+				outputsLayerBias[j] += deltaOutput[j]*lr;
 				for (int k=0; k<numHiddenNodes; k++){
 					outputWeights[k][j]+=hiddenLayer[k]*deltaOutput[j]*lr;
 				}
 			}
 			for (int j=0; j<numHiddenNodes; j++){
-				hiddenLayresBias[j] *= deltaHidden[j]*lr;
+				hiddenLayersBias[j] *= deltaHidden[j]*lr;
 				for(int k=0; k<numInputs; k++){
 					hiddenWeights[k][j]+=training_inputs[i][k]*deltaHidden[j]*lr;
 				}
