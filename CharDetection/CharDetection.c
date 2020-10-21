@@ -18,12 +18,12 @@ void draw_ligne_W(SDL_Surface *img, int i)
     }
 }
 
-void draw_ligne_H(SDL_Surface *img, int j)
+void draw_ligne_H(SDL_Surface *img, int j,int f,int l)
 {
     int h = img -> h;
     Uint32 pixel;
 
-    for (int i = 0; i < h ;i++)
+    for (int i = f; i < l ;i++)
     {
         pixel = SDL_MapRGB(img->format,255, 0, 0);
         put_pixel(img,j,i,pixel);
@@ -108,11 +108,12 @@ void ligne_coord(SDL_Surface* img)
         //If there is a red line start cut
         if (r == 255 && b == 0 && g == 0)
         {
-            firstligne = i;
+            firstligne = i+1;
+            
              
-            while (i < h)
+            while (i < h-1)
             {
-                pixel = get_pixel(img, 0, i);
+                pixel = get_pixel(img, 0, i+1);
                 SDL_GetRGB(pixel, img->format, &r, &g, &b);
 
                 
@@ -122,8 +123,10 @@ void ligne_coord(SDL_Surface* img)
                     cut_ligne(img, firstligne, lastligne);
                     break;
                 }
+                i++;
             }
             i++;
+            
         }
 
         i++;
@@ -133,7 +136,7 @@ void ligne_coord(SDL_Surface* img)
 void cut_ligne(SDL_Surface* img, int firstCut,int lastCut) 
 {
     Uint32 pixel;
-    SDL_Surface* copy = NULL;
+    /*SDL_Surface* copy = NULL;
     int w = img -> w;
     copy = SDL_CreateRGBSurface(SDL_HWSURFACE,
                               w,
@@ -147,20 +150,19 @@ void cut_ligne(SDL_Surface* img, int firstCut,int lastCut)
             put_pixel(copy, j, i, pixel);
         }
     }
-  
-  char_Detect(img,copy,firstCut);
+  */
+  char_Detect(img,firstCut,lastCut);
   //isolateChar(copy, net);
   //net -> str = concat(net -> str, "\n");
 }
 
 
-void char_Detect(SDL_Surface* timg, SDL_Surface* img,int f)
+void char_Detect(SDL_Surface* img,int f,int l)
 {
     Uint32 pixel;
     Uint8 r;
     Uint8 g;
     Uint8 b;
-    int h = img->h;
     int w = img->w;
     int inchar = 0; 
     
@@ -169,24 +171,24 @@ void char_Detect(SDL_Surface* timg, SDL_Surface* img,int f)
         if (!inchar)
         {   
 
-            for (int j = 0; j < h; j++)
+            for (int j = f; j < l; j++)
             {
-                pixel = get_pixel(img, j, i);
+                pixel = get_pixel(img, i, j);
                 SDL_GetRGB(pixel, img->format, &r, &g, &b);
 
 
 
                 if (!r && !g && !b)
                 {
-                     printf(" i");
+                    
                     if (i == 0)
                     {
-                        draw_ligne_H(timg, i);
+                        draw_ligne_H(img, i, f, l);
                         inchar = 1;
                     }
                     else
                     {
-                        draw_ligne_H(timg, i - 1);
+                        draw_ligne_H(img, i - 1, f, l);
                         inchar = 1;
                     }
                 }
@@ -194,10 +196,10 @@ void char_Detect(SDL_Surface* timg, SDL_Surface* img,int f)
         }
         if (inchar)
         {
-            int j = 0;
-            for (j = 0; j < h; j++)
+            int j = f;
+            for (j = f; j < l; j++)
             {
-                pixel = get_pixel(img, j, i);
+                pixel = get_pixel(img, i, j);
                 SDL_GetRGB(pixel, img->format, &r, &g, &b);
 
                 if (!r && !g && !b)
@@ -205,12 +207,10 @@ void char_Detect(SDL_Surface* timg, SDL_Surface* img,int f)
                     break;
                 }
             }
-            if (j > h - 1)
+            if (j > l - 1)
             {
-                printf("i");
-
                 inchar = 0;
-                draw_ligne_H(timg, i);
+                draw_ligne_H(img, i, f, l);
             }
             
         }
@@ -240,7 +240,7 @@ void char_coord(SDL_Surface* img)
             firstLchar = i;
             r = 0;
 
-            draw_ligne_H(img, i);
+            draw_ligne_H(img, i,i,i);
             while (r != 255 && b != 0 && g != 0)
             {
                 

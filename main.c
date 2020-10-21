@@ -6,6 +6,7 @@
 #include "tools/tools.h"
 #include "treatment/treatment.h"
 #include "CharDetection/CharDetection.h"
+#include "neural_network/neural_network_XOR.h"
 
 void init_sdl()
 {
@@ -91,10 +92,21 @@ int main()
     // Wait for a key to be pressed.
      
     greyscale(image_surface);
+  
 
-    Contrast(image_surface, 0.4f );
+   
+
+    Contrast(image_surface, 0.99f );
+
+ 
+
+
 
     blacknwhite(image_surface);
+
+    display_image(image_surface);
+
+    wait_for_keypressed();
 
     ligne_detect(image_surface);
    
@@ -107,6 +119,8 @@ int main()
     display_image(image_surface);
 
     wait_for_keypressed();
+    
+    XOR();
 
     // Free the image surface.
     SDL_FreeSurface(image_surface);

@@ -114,7 +114,7 @@ void blacknwhite(SDL_Surface *img)
    {
      pixel = get_pixel(img,i,j);
      SDL_GetRGB(pixel, img->format, &r, &g, &b);
-     if(r >= 127 && g >= 127 && b >= 127)
+     if(r >= 175 && g >= 175 && b >= 175)
      {
       r = 255;
       g = 255;
