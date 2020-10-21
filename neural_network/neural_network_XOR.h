@@ -10,5 +10,8 @@
 
 
 void XOR();
+double sigmoid(double x);
+double dSigmoid(double x);
+double init_weight_biais();
 
 # endif

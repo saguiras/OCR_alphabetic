@@ -4,19 +4,31 @@
 # include <SDL/SDL.h>
 
 
+double sigmoid(double x){                 //tools functions
+	return (1/(1 + (exp(-x))));
+}
+
+double dSigmoid(double x){
+	return x*(1-x);
+}
+
+double init_weight_biais(){
+	return ((double) rand())/((double) RAND_MAX);
+}
+
 void Train_NtWork(SDL_Surface *img, int attempted){
-	static const int nb_inputs = 900 ; // nb de pixels dans l image
-	static const int nb_outputs = 92; //ASCII 126 - 33 peut etre 93
-	static const int nb_hid = 2; // nb de niveaux caches commence par 2
+	static const int numInputs = 2 ; // nb of pixels in the image (16*16)
+	static const int numHiddenNodes = 2; //ASCII 
+	static const int numOutputs = 1; // nb of hiddens level
 
-	double hidLayer[nb_hid];
-	double outLayer[nb_outputs];               //biais entree et sortie entre deuxieme hiden et sortie
+	double hiddenLayer[numHiddenNodes];
+	double outputLayer[numOutputs];        //biais entree et sortie entre deuxieme hiden et sortie
 
-	double hidenLayerBiais[nb_hid];            //On a 4 niveau donc 3 nvx de biais de transition si on veut plus de hidden layers il faut ajouter des vars de biais
-	double outBiais[nb_outputs];             // les biais d entree et de sorti entre les hidden
+	double hidenLayerBias[numHiddenNodes];            //On a 4 niveau donc 3 nvx de biais de transition si on veut plus de hidden layers il faut ajouter des vars de biais
+	double outLayerBias[numOutputs];            // les biais d entree et de sorti entre les hidden
 
-	double hidBiais[nb_inputs][nb_hid];
-	double outWeights[nb_hid][nb_outputs];
+	double hiddenWeights[numInputs][numHiddenNodes];
+	double outputWeights[numHiddenNodes][numOutputs];
 
 	//On se base sur le reseau de neurone SGD
 
@@ -27,16 +39,53 @@ void Train_NtWork(SDL_Surface *img, int attempted){
 
 	//On va se servir de sigmoid ici
 
-	for (int i = 0; i < nb_hid; ++i)
+	for (int n=0; n< epochs ; n++)
 	{
-		double activ = hidenLayerBiais[i];
-		for (int i = 0; i < nb_inputs; ++i)
-		{
-			activ += trai
+		int trainingSetOrder[] = {0,1,2,3};
+		shuffle(trainingSetOrder, numTrainingSets);
+
+		for ( int x=0; x<numTrainingSets; x++){
+			int i = trainingSetOrder[X];
+			for (int j=0; j<numHiddenNodes; j++){
+				double activation=hiddenLayerBias[j];
+				for (int k=0; k<numInputs; k++){
+					activation+=training_inputs[i][k]*hiddenWeights[k][j];
+				}
+				hiddenLayers[j] = sigmoid(activation);
+			}
+			for (int j=0; j<numOutputs; j++) {
+				double activation=outputsLayersBias[j];
+				for (int k=0; k<numHiddenNodes; k++){
+					activation+=hiddenLayers[k]*outputWeights[k][j];
+				}
+				outputLayer[j] = sigmoid(activation);
+			}
+			double deltaOutput[numOutputs];
+			for (int j=0; j<numOutputs; j++){
+				double dError = (training_outputs[i][j]-outputLayer[j]);
+				deltaOutput[j] = dError*dSigmoid(outputLayer[j]);
+			}
+			double deltaHidden[numHiddenNodes];
+			for (int j=0; j<numHiddensNodes; j++){
+				double dError = 0.0f;
+				for(int k=0; k<numOutputs; k++){
+					dError+=deltaOutput[k]*outputWeights[j][k];
+				}
+				deltaHidden[j] = dError*dSigmoid(hiddenLayer[j]);
+			}
+			for(int j =0; j<numOutputs; j++){
+				outputLayerBias[j] += deltaOutput[j]*lr;
+				for (int k=0; k<numHiddenNodes; k++){
+					outputWeights[k][j]+=hiddenLayer[k]*deltaOutput[j]*lr;
+				}
+			}
+			for (int j=0; j<numHiddenNodes; j++){
+				hiddenLayresBias[j] *= deltaHidden[j]*lr;
+				for(int k=0; k<numInputs; k++){
+					hiddenWeights[k][j]+=training_inputs[i][k]*deltaHidden[j]*lr;
+				}
+			}
 		}
 	}
-
-
-
-
 }
+		
