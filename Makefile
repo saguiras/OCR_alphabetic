@@ -5,7 +5,7 @@ CFLAGS = -Wall -Wextra -std=c99 -g
 LDFLAGS =
 LDLIBS= `pkg-config --libs sdl` -lSDL_image 
 
-SRC = main.c treatment/treatment.c tools/tools.c 
+SRC = main.c treatment/treatment.c tools/tools.c CharDetection/CharDetection.c
 OBJ= $(SRC:.c=.o)
 DEP= $(SRC:.c=.d)
 
