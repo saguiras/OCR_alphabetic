@@ -2,7 +2,7 @@
 #include "../treatment/treatment.c"
 # include <stdlib.h>
 # include <SDL/SDL.h>
-
+# include <math.h>
 
 double sigmoid(double x){                 //tools functions
 	return (1/(1 + (exp(-x))));
@@ -18,7 +18,7 @@ double init_weight_biais(){
 
 void XOR(){
 	int epochs = 10000;
-	int numTrainingSets = 4;
+	static const int numTrainingSets = 4;
 
 	static const int numInputs = 2 ; // nb of pixels in the image (16*16)
 	static const int numHiddenNodes = 2; //ASCII 
@@ -35,7 +35,6 @@ void XOR(){
 
 	//On se base sur le reseau de neurone SGD
 
-	static const int numTrainingSets = 4;
 	double training_inputs[numTrainingSets][numInputs] = { {0.0f,0.0f},{1.0f,0.0f},{0.0f,1.0f},{1.0f,1.0f} }; // pas compris ca 
 	double training_outputs[numTrainingSets][numOutputs] = { {0.0f},{1.0f},{1.0f},{0.0f} };
 
@@ -59,7 +58,7 @@ void XOR(){
 			for (int j=0; j<numOutputs; j++) {
 				double activation=outputLayersBias[j];
 				for (int k=0; k<numHiddenNodes; k++){
-					activation+=hiddenLayers[k]*outputWeights[k][j];
+					activation+=hiddenLayer[k]*outputWeights[k][j];
 				}
 				outputLayer[j] = sigmoid(activation);
 			}
@@ -77,13 +76,13 @@ void XOR(){
 				deltaHidden[j] = dError*dSigmoid(hiddenLayer[j]);
 			}
 			for(int j =0; j<numOutputs; j++){
-				outputsLayerBias[j] += deltaOutput[j]*lr;
+				outputLayerBias[j] += deltaOutput[j]*lr;
 				for (int k=0; k<numHiddenNodes; k++){
 					outputWeights[k][j]+=hiddenLayer[k]*deltaOutput[j]*lr;
 				}
 			}
 			for (int j=0; j<numHiddenNodes; j++){
-				hiddenLayersBias[j] *= deltaHidden[j]*lr;
+				hiddenLayerBias[j] += deltaHidden[j]*lr;
 				for(int k=0; k<numInputs; k++){
 					hiddenWeights[k][j]+=training_inputs[i][k]*deltaHidden[j]*lr;
 				}
