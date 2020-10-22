@@ -10,13 +10,9 @@
 
 void draw_ligne_H(SDL_Surface *img, int j,int f,int l);
 void draw_ligne_W(SDL_Surface *img, int i);
+void char_Detect(SDL_Surface* img,int f,int l);
 void ligne_detect(SDL_Surface *img);
 void ligne_coord(SDL_Surface* img);
-void cut_ligne(SDL_Surface* img, int firstCut,int lastCut);
-void char_coord(SDL_Surface* img);
-void cut_char(SDL_Surface* img, int firstCut,int lastCut);
-void char_Detect(SDL_Surface* img,int f,int l);
-
 
 
 # endif

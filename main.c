@@ -6,7 +6,7 @@
 #include "tools/tools.h"
 #include "treatment/treatment.h"
 #include "CharDetection/CharDetection.h"
-#include "neural_network/neural_network_XOR.h"
+
 
 void init_sdl()
 {
@@ -120,8 +120,7 @@ int main()
 
     wait_for_keypressed();
     
-    XOR();
-
+    
     // Free the image surface.
     SDL_FreeSurface(image_surface);
 
