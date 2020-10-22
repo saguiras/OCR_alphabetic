@@ -35,11 +35,25 @@ void XOR(){
 
 	//On se base sur le reseau de neurone SGD
 
-	double training_inputs[numTrainingSets][numInputs] = { {0.0f,0.0f},{1.0f,0.0f},{0.0f,1.0f},{1.0f,1.0f} }; // pas compris ca 
-	double training_outputs[numTrainingSets][numOutputs] = { {0.0f},{1.0f},{1.0f},{0.0f} };
+	double training_inputs[4][2];
+	double training_outputs[4][1];
 
+	training_inputs[0][0] = 0.0f;
+	training_inputs[0][1] = 0.0f;
+	training_inputs[1][0] = 1.0f;
+	training_inputs[1][1] = 0.0f;
+	training_inputs[2][0] = 0.0f;
+	training_inputs[2][1] = 1.0f;
+	training_inputs[3][0] = 1.0f;
+	training_inputs[3][1] = 1.0f;
 
-	//On va se servir de sigmoid ici
+	training_outputs[0][0] = 0.0f;
+	training_outputs[1][0] = 1.0f;
+	training_outputs[2][0] = 1.0f;
+	training_outputs[3][0] = 0.0f;
+
+	//double training_inputs[numTrainingSets][numInputs] = { {0.0f,0.0f},{1.0f,0.0f},{0.0f,1.0f},{1.0f,1.0f} }; // pas compris ca 
+	//double training_outputs[numTrainingSets][numOutputs] = { {0.0f},{1.0f},{1.0f},{0.0f} };
 
 	for (int n=0; n< epochs ; n++)
 	{
@@ -56,7 +70,7 @@ void XOR(){
 				hiddenLayer[j] = sigmoid(activation);
 			}
 			for (int j=0; j<numOutputs; j++) {
-				double activation=outLayersBias[j];
+				double activation=outLayerBias[j];
 				for (int k=0; k<numHiddenNodes; k++){
 					activation+=hiddenLayer[k]*outputWeights[k][j];
 				}
@@ -76,15 +90,15 @@ void XOR(){
 				deltaHidden[j] = dError*dSigmoid(hiddenLayer[j]);
 			}
 			for(int j =0; j<numOutputs; j++){
-				outputLayersBias[j] += deltaOutput[j]*lr;
+				outLayerBias[j] += deltaOutput[j]*0.1;
 				for (int k=0; k<numHiddenNodes; k++){
-					outputWeights[k][j]+=hiddenLayer[k]*deltaOutput[j]*lr;
+					outputWeights[k][j]+=hiddenLayer[k]*deltaOutput[j]*0.1;
 				}
 			}
 			for (int j=0; j<numHiddenNodes; j++){
-				hidenLayerBias[j] += deltaHidden[j]*lr;
+				hidenLayerBias[j] += deltaHidden[j]*0.1;
 				for(int k=0; k<numInputs; k++){
-					hiddenWeights[k][j]+=training_inputs[i][k]*deltaHidden[j]*lr;
+					hiddenWeights[k][j]+=training_inputs[i][k]*deltaHidden[j]*0.1;
 				}
 			}
 		}
