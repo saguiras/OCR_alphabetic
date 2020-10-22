@@ -1,5 +1,4 @@
 #include "neural_network_XOR.h"
-#include "../treatment/treatment.c"
 # include <stdlib.h>
 # include <SDL/SDL.h>
 # include <math.h>
