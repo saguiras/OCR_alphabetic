@@ -20,7 +20,6 @@ void draw_ligne_W(SDL_Surface *img, int i)
 
 void draw_ligne_H(SDL_Surface *img, int j,int f,int l)
 {
-    int h = img -> h;
     Uint32 pixel;
 
     for (int i = f; i < l ;i++)
@@ -78,14 +77,175 @@ void ligne_detect(SDL_Surface* img)
                     break;
                 }
             }
+
             if (j > w - 1)
             {
-                inligne = 0;
                 draw_ligne_W(img, i);
+                
+                int disection = 0;
+
+                if (i+1 < h)
+                {
+                    for (int x = 0; x < w; x++)
+                    {            
+                        pixel = get_pixel(img, x, i+1);
+                        SDL_GetRGB(pixel, img->format, &r, &g, &b);
+
+                        if (!r && !g && !b)
+                        {
+                            disection = 1;
+                            break;
+                        }
+                    }
+
+                }
+                
+                if (disection)
+                {
+                    draw_ligne_W(img, i+1);
+                    i += 1;
+                }
+                else
+                { 
+                    inligne = 0;
+                }                
             }
         }
     }
 
+}
+
+
+void Char_Detect(SDL_Surface* img,int f,int l)
+{
+    Uint32 pixel;
+    Uint8 r;
+    Uint8 g;
+    Uint8 b;
+    int w = img->w;
+    int inchar = 0; 
+    
+    for (int i = 0; i < w; i++)
+    {
+        int f_array[l-f-1];
+        int l_array[l-f-1];
+        if (!inchar)
+        {   
+
+            for (int j = f; j < l; j++)
+            {
+                pixel = get_pixel(img, i, j);
+                SDL_GetRGB(pixel, img->format, &r, &g, &b);
+
+
+                if (!r && !g && !b)
+                {
+                    
+                    if (i == 0)
+                    {
+                        draw_ligne_H(img, i, f, l);
+                        inchar = 1;
+                        for(int j = 0; j < l-f ;j++)
+                        {
+                            f_array[j] = 1;
+                            l_array[j] = 0;
+                        }
+                        i++;
+
+                    }
+                    else
+                    {
+                        draw_ligne_H(img, i - 1, f, l);
+                        inchar = 1;
+                        for(int j = 0; j < l-f;j++)
+                        {
+                            f_array[j] = 1;
+                            l_array[j] = 0;
+                        }
+
+                    }
+                }
+            }
+        }
+
+        if (inchar)
+        {
+            int h = 0;
+            int deux_char = 1;
+
+
+            for (int j = f; j < l;j++)
+            {
+                pixel = get_pixel(img, i, j);
+                SDL_GetRGB(pixel, img->format, &r, &g, &b);
+                h = j - f;
+                if (!r && !g && !b)
+                {
+                    l_array[h] = 1;
+                }
+                else 
+                {
+                    l_array[h] = 0;
+                }
+
+
+            }
+            for (int j = f; j < l; j++)
+            {
+                pixel = get_pixel(img, i, j);
+                SDL_GetRGB(pixel, img->format, &r, &g, &b);
+                h = j - f;
+
+                
+
+                if (!r && !g && !b)
+                {
+                    
+
+                    
+                    if ( (h == 0 && h == l - f) &&
+                            f_array[h] == 1 )
+                    {
+                            deux_char = 0;
+                    }
+                    else if ( h == 0  &&
+                            ( f_array[h] == 1 ||
+                              f_array[h+1] == 1 ))
+                    {
+                           deux_char = 0;
+                    }
+                    else if ( h == l-f  &&
+                            ( f_array[h] == 1 ||
+                              f_array[h-1] == 1 ))
+                    {
+                          deux_char = 0;
+                    }
+                    else if (f_array[h] == 1 ||
+                              f_array[h-1] == 1 ||
+                              f_array[h+1] == 1 )
+                    {
+                            deux_char = 0;
+                    }
+
+                }
+
+            }
+            if (deux_char)
+            {
+
+
+                inchar =0;
+                draw_ligne_H(img, i, f, l);
+            }
+
+            for (int j = 0;j <= h;j++)
+            {
+                f_array[j] = l_array[j];
+
+            }
+            
+        }
+    }
 }
 
 void ligne_coord(SDL_Surface* img)
@@ -109,164 +269,27 @@ void ligne_coord(SDL_Surface* img)
         if (r == 255 && b == 0 && g == 0)
         {
             firstligne = i+1;
-            
-             
+
+
             while (i < h-1)
             {
                 pixel = get_pixel(img, 0, i+1);
                 SDL_GetRGB(pixel, img->format, &r, &g, &b);
 
-                
+
                 if (r == 255 && b == 0 && g == 0)
                 {
-                    lastligne = i+1; 
-                    cut_ligne(img, firstligne, lastligne);
+                    lastligne = i+1;
+                    Char_Detect(img, firstligne, lastligne);
                     break;
                 }
                 i++;
             }
             i++;
-            
+
         }
 
         i++;
     }
-}
-
-void cut_ligne(SDL_Surface* img, int firstCut,int lastCut) 
-{
-    Uint32 pixel;
-    /*SDL_Surface* copy = NULL;
-    int w = img -> w;
-    copy = SDL_CreateRGBSurface(SDL_HWSURFACE,
-                              w,
-                              lastCut - firstCut,
-                              img -> format -> BitsPerPixel, 0, 0, 0, 0);
-    for(int i = firstCut; i < lastCut ; i++)
-    {
-        for(int j = 0; j < w; j++)
-        {
-            pixel = get_pixel(img, j, i);
-            put_pixel(copy, j, i, pixel);
-        }
-    }
-  */
-  char_Detect(img,firstCut,lastCut);
-  //isolateChar(copy, net);
-  //net -> str = concat(net -> str, "\n");
-}
-
-
-void char_Detect(SDL_Surface* img,int f,int l)
-{
-    Uint32 pixel;
-    Uint8 r;
-    Uint8 g;
-    Uint8 b;
-    int w = img->w;
-    int inchar = 0; 
-    
-    for (int i = 0; i < w; i++)
-    {
-        if (!inchar)
-        {   
-
-            for (int j = f; j < l; j++)
-            {
-                pixel = get_pixel(img, i, j);
-                SDL_GetRGB(pixel, img->format, &r, &g, &b);
-
-
-
-                if (!r && !g && !b)
-                {
-                    
-                    if (i == 0)
-                    {
-                        draw_ligne_H(img, i, f, l);
-                        inchar = 1;
-                    }
-                    else
-                    {
-                        draw_ligne_H(img, i - 1, f, l);
-                        inchar = 1;
-                    }
-                }
-            }
-        }
-        if (inchar)
-        {
-            int j = f;
-            for (j = f; j < l; j++)
-            {
-                pixel = get_pixel(img, i, j);
-                SDL_GetRGB(pixel, img->format, &r, &g, &b);
-
-                if (!r && !g && !b)
-                {
-                    break;
-                }
-            }
-            if (j > l - 1)
-            {
-                inchar = 0;
-                draw_ligne_H(img, i, f, l);
-            }
-            
-        }
-    }
-}
-
-void char_coord(SDL_Surface* img)
-{
-    /* Variables */
-    Uint32 pixel;
-    Uint8 r;
-    Uint8 g;
-    Uint8 b;
-    int w = img->w;
-    int i = 0;
-    int firstLchar;
-    int lastLchar;
-
-    while (i < w)
-    {
-        pixel = get_pixel(img, i, 0);
-        SDL_GetRGB(pixel, img->format, &r, &g, &b);
-
-        //If there is a red line start cut
-        if (r == 255 && b == 0 && g == 0)
-        {
-            firstLchar = i;
-            r = 0;
-
-            draw_ligne_H(img, i,i,i);
-            while (r != 255 && b != 0 && g != 0)
-            {
-                
-                pixel = get_pixel(img, i, 0);
-                SDL_GetRGB(pixel, img->format, &r, &g, &b);
-
-                //Detect the second line
-                if (r == 255 && b == 0 && g == 0)
-                {
-                    lastLchar = i;
-
-                    //Isolate into a surface the linecut
-                    cut_char(img, firstLchar, lastLchar);
-                }
-
-                i++;
-            }
-        }
-
-        i++;
-    }
-}
-
-void cut_char(SDL_Surface* img, int firstCut,
-    int lastCut)
-{
-    return;
 }
 
