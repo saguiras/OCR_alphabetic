@@ -1,5 +1,4 @@
 #include "neural_network_XOR.h"
-#include "../treatment/treatment.c"
 # include <stdlib.h>
 # include <SDL/SDL.h>
 # include <math.h>
@@ -14,6 +13,18 @@ double dSigmoid(double x){
 
 double init_weight_biais(){
 	return ((double) rand())/((double) RAND_MAX);
+}
+
+void shuffle (int array[],int len){
+	int i = 0;
+	while(i<len*2){
+	 	int rdm = rand() % 4;
+		int rdm2 = rand() % 4;
+		int mem = array[rdm];
+		array[rdm] = array[rdm2];
+		array[rdm2] = mem;
+		i++;
+	}
 }
 
 void XOR(){
@@ -102,6 +113,9 @@ void XOR(){
 				}
 			}
 		}
+		
+		if((epochs % 100) == 0)
+			printf("%f\n",dError);
 	}
 }
 		
