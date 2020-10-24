@@ -7,10 +7,8 @@
 # include <stdlib.h>
 # include <time.h>
 # include <math.h>
+# include "neural_Tools.h"
 
-void XOR();
-double sigmoid(double x);
-double dSigmoid(double x);
-double init_weight_biais();
+void XOR(int epoch_);
 
 # endif

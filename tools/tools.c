@@ -65,3 +65,35 @@ void update_surface(SDL_Surface* screen, SDL_Surface* image)
     SDL_UpdateRect(screen, 0, 0, image->w, image->h);
 }
 
+void array_swap(int array[], size_t i, size_t j)
+{
+  int element1 = array[i];
+  int element2 = array[j];
+  array[i] = element2;
+  array[j] = element1;
+}
+
+void array_select_sort(int array[], size_t len)
+{
+  size_t i = 0;
+  size_t j;
+  int min_index;
+  while(i<len)
+  {
+    /* Find Min Index */
+    j= i;
+    min_index = j;
+    while(j<len)
+    {
+        if(array[j]<array[min_index])
+        {
+            min_index = j;
+        }
+        j+=1;
+    }
+    array_swap(array,i,min_index);
+    i++;
+  }
+}
+
+
