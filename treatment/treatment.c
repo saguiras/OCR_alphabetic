@@ -299,11 +299,11 @@ void Brightness(SDL_Surface *img, float factor)
         for(int j = 0; j < h; j++)
         {
             pixel = get_pixel(img,i,j);
-            SDL_GetRGB(pixel, img->format, &r, &g, &b);         //On obtient les valeurs rgb du pixel voulu
-             r = factor * r;                                   //On multiplie chaque valeur rgb par le meme facteur de luminosite voulu
+            SDL_GetRGB(pixel, img->format, &r, &g, &b);         //We get the rgb values of the pixel
+             r = factor * r;                                   //we multiplie the values by the brightness factor we decided
              g = factor * g;
              b = factor * b;
-            pixel = SDL_MapRGB(img->format,r, g, b);           //On applique les changements
+            pixel = SDL_MapRGB(img->format,r, g, b);           //we apply the changes on the pixel
             put_pixel(img,i,j,pixel);
         }
     }
@@ -357,7 +357,7 @@ void draw_whit_H(SDL_Surface *img, int x,int y,int i)//we draw a horizontal line
 
 
 
-void noligne_H(SDL_Surface *img)
+void noligne_H(SDL_Surface *img)
 {
     Uint32 pixel;
     Uint8 r;
