@@ -6,7 +6,7 @@
 
 
 
-void draw_ligne_W(SDL_Surface *img, int i)
+void draw_ligne_W(SDL_Surface *img, int i)      //fonction pour dessiner une ligne horizontale au niveau de la ligne i
 {
     int w = img -> w;
     Uint32 pixel;
@@ -18,7 +18,7 @@ void draw_ligne_W(SDL_Surface *img, int i)
     }
 }
 
-void draw_ligne_H(SDL_Surface *img, int j,int f,int l)
+void draw_ligne_H(SDL_Surface *img, int j,int f,int l) //fonction pour dessiner une ligne verticale de f à l au niveau de la colonne j
 {
     Uint32 pixel;
 
@@ -30,7 +30,7 @@ void draw_ligne_H(SDL_Surface *img, int j,int f,int l)
 }
 
 
-void ligne_detect(SDL_Surface* img)
+void ligne_detect(SDL_Surface* img) //fonction de detection de ligne 
 {
     Uint32 pixel;
     Uint8 r;
@@ -49,15 +49,15 @@ void ligne_detect(SDL_Surface* img)
                 pixel = get_pixel(img, j, i);
                 SDL_GetRGB(pixel, img->format, &r, &g, &b);
 
-                if (!r && !g && !b)
+                if (!r && !g && !b) //if the pixel is black
                 {
-                    if (i == 0) 
+                    if (i == 0)  //if this is the first line we draw a horizontal line
                     {
                         draw_ligne_W(img, i);
                     }
                     else
                     {
-                        draw_ligne_W(img, i - 1);
+                        draw_ligne_W(img, i - 1);//we draw a line over it
                         inligne = 1;
                     }
                 }
@@ -72,7 +72,7 @@ void ligne_detect(SDL_Surface* img)
                 pixel = get_pixel(img, j, i);
                 SDL_GetRGB(pixel, img->format, &r, &g, &b);
 
-                if (!r && !g && !b)
+                if (!r && !g && !b) //if a pixel is black on the line we cut the process for this line
                 {
                     break;
                 }
@@ -100,7 +100,7 @@ void ligne_detect(SDL_Surface* img)
 
                 }
                 
-                if (disection)
+                if (disection)//if a pixel is black on this and this is the lowest one we draw a horizontal line under it
                 {
                     draw_ligne_W(img, i+1);
                     i += 1;
@@ -116,20 +116,20 @@ void ligne_detect(SDL_Surface* img)
 }
 
 
-void Char_Detect(SDL_Surface* img,int f,int l)
+void Char_Detect(SDL_Surface* img,int f,int l) //character recognition function
 {
     Uint32 pixel;
     Uint8 r;
     Uint8 g;
     Uint8 b;
     int w = img->w;
-    int inchar = 0; 
+    int inchar = 0; //variable to detect if ta line has been drawn before 
     
     for (int i = 0; i < w; i++)
     {
         int f_array[l-f-1];
         int l_array[l-f-1];
-        if (!inchar)
+        if (!inchar) 
         {   
 
             for (int j = f; j < l; j++)
@@ -138,13 +138,13 @@ void Char_Detect(SDL_Surface* img,int f,int l)
                 SDL_GetRGB(pixel, img->format, &r, &g, &b);
 
 
-                if (!r && !g && !b)
+                if (!r && !g && !b) // if the pixel is black
                 {
                     
-                    if (i == 0)
+                    if (i == 0) //we draw a vertical line in right before any text
                     {
                         draw_ligne_H(img, i, f, l);
-                        inchar = 1;
+                        inchar = 1;//the vertical line detector is redefined to True
                         for(int j = 0; j < l-f ;j++)
                         {
                             f_array[j] = 1;
@@ -155,7 +155,7 @@ void Char_Detect(SDL_Surface* img,int f,int l)
                     }
                     else
                     {
-                        draw_ligne_H(img, i - 1, f, l);
+                        draw_ligne_H(img, i - 1, f, l);//we draw a vertical line right before any black pixel
                         inchar = 1;
                         for(int j = 0; j < l-f;j++)
                         {
@@ -168,10 +168,10 @@ void Char_Detect(SDL_Surface* img,int f,int l)
             }
         }
 
-        if (inchar)
+        if (inchar)//if a line has been drawn
         {
             int h = 0;
-            int deux_char = 1;
+            int two_char = 1;
 
 
             for (int j = f; j < l;j++)
@@ -179,7 +179,7 @@ void Char_Detect(SDL_Surface* img,int f,int l)
                 pixel = get_pixel(img, i, j);
                 SDL_GetRGB(pixel, img->format, &r, &g, &b);
                 h = j - f;
-                if (!r && !g && !b)
+                if (!r && !g && !b)//if the pixel is black
                 {
                     l_array[h] = 1;
                 }
@@ -198,7 +198,7 @@ void Char_Detect(SDL_Surface* img,int f,int l)
 
                 
 
-                if (!r && !g && !b)
+                if (!r && !g && !b)//part where we try to figure out if there is a double char
                 {
                     
 
@@ -206,31 +206,31 @@ void Char_Detect(SDL_Surface* img,int f,int l)
                     if ( (h == 0 && h == l - f) &&
                             f_array[h] == 1 )
                     {
-                            deux_char = 0;
+                            two_char = 0;
                     }
                     else if ( h == 0  &&
                             ( f_array[h] == 1 ||
                               f_array[h+1] == 1 ))
                     {
-                           deux_char = 0;
+                           two_char = 0;
                     }
                     else if ( h == l-f  &&
                             ( f_array[h] == 1 ||
                               f_array[h-1] == 1 ))
                     {
-                          deux_char = 0;
+                          two_char = 0;
                     }
                     else if (f_array[h] == 1 ||
                               f_array[h-1] == 1 ||
                               f_array[h+1] == 1 )
                     {
-                            deux_char = 0;
+                            two_char = 0;
                     }
 
                 }
 
             }
-            if (deux_char)
+            if (two_char)//if the two chars are distincts char we draw a vertical break line
             {
 
 

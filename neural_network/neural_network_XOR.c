@@ -6,59 +6,44 @@
 
 struct NeuralNetwork
 {
-// Size of the neural network
+//size neural network
 	int nbInputs;
 	int nbHidden;
 	int nbOutputs;
 	
-// Matrices
-	// Matrix of the input values
         struct Matrix matInputValues;
-	// Matrix of ecpected outputs
+	//expected outputs
 	struct Matrix matAim;
-	// Matrix of weights between input neurons to hidden neurons
+	//input/hidden
 	struct Matrix matWeightsIH;
-	// Matrix of weights between hidden neurons to output neurons
+	//hidden/output
 	struct Matrix matWeightsHO;
-	// Matrix of the biases of hidden neurons
+	//biases of hidden
 	struct Matrix matBiasH;
-	// Matrix of the output of the hidden layer (after the sum)
+	//output hidden (after sum))
 	struct Matrix matOutputH;
-	// Matrix of the sum of weights * inputs
+	//sum of weights * inputs
 	struct Matrix matSumIH;
-	// Error values
+	//error values
 	struct Matrix matErrors;
-	// Matrix of derivatives
 	struct Matrix matDerivatives;
-	// Matrix gradients hidden to output weights
 	struct Matrix matGradientsHO;
-	// Matrix gradients input weights
 	struct Matrix matGradientsIH;
-	// Matrix gradients bias
 	struct Matrix matGradientsB;
-	// Matrix previous weights for backpropagation IH
 	struct Matrix matPreviousWeightsIH;
-	// Matrix previous weights for backpropagation HO
 	struct Matrix matPreviousWeightsHO;
-	// Matrix previous bias for hidden
 	struct Matrix matPreviousBiasH;
 
-// Other variables
-	// Gradient Bias Output
+	//gradient Bias Output
         struct Matrix GradientBiasOutput;
-	// Bias of output neuron
+	//bias of output neuron
         struct Matrix BiasO;
-	// Sum of the weights * outputs of hidden neurons
+	//sum of weights * outputs of hidden 
 	struct Matrix SumHOutputs;
-	// Final Output
 	struct Matrix FinalOutput;
-	// Derivative Output
 	struct Matrix DerivativeO;
-	// Learning rate
 	double LearningRate;
-	// Constante
 	double ConstanteUpdate;
-	// previous bias output
 	struct Matrix PreviousBiasO;
 };
 
@@ -71,7 +56,7 @@ struct NeuralNetwork InitializeNetwork()
 	net.nbHidden = 2;
 	net.nbOutputs = 1;
 
-// Initializing input matrix
+//initialise input
 	net.matInputValues = CreateMatrix(8, 1);
 	ChangeMatrix(net.matInputValues, 0, 0, 0);
 	ChangeMatrix(net.matInputValues, 1, 0, 0);
@@ -82,26 +67,21 @@ struct NeuralNetwork InitializeNetwork()
 	ChangeMatrix(net.matInputValues, 6, 0, 1);
 	ChangeMatrix(net.matInputValues, 7, 0, 1);
 		
-// Initializing error matrix
+//initialise error
 	net.matErrors = CreateMatrix(8, 1);
 	ChangeMatrix(net.matErrors, 0, 0, 1);
 	ChangeMatrix(net.matErrors, 2, 0, 1);
 	ChangeMatrix(net.matErrors, 4, 0, 1);
 	ChangeMatrix(net.matErrors, 6, 0, 1);
 
-// Initializing the aim matrix
+//initialise aim
 	net.matAim = CreateMatrix(8, 1);
 	ChangeMatrix(net.matAim, 0, 0, 0);
 	ChangeMatrix(net.matAim, 2, 0, 1);
 	ChangeMatrix(net.matAim, 4, 0, 1);
         ChangeMatrix(net.matAim, 6, 0, 0);
 
-// Matrices of weights, in first layer rows are hidden neurons and
-// cloums are imput neurons, for example, [0;0] would be the weight
-// of the connection between the first input neuron and the first
-// hidden neuron, [0;1] would be the weight of the connection
-// between the second input neuron and the first hidden neuron;
-// sum of a row is the sum you need to normalize
+
 	net.matWeightsIH = CreateMatrix(net.nbHidden, net.nbInputs);
 	net.matWeightsHO = CreateMatrix(net.nbOutputs, net.nbHidden);
 	net.matOutputH = CreateMatrix(net.nbHidden, 1);
@@ -115,10 +95,7 @@ struct NeuralNetwork InitializeNetwork()
 	net.matGradientsHO = CreateMatrix(net.nbOutputs, net.nbHidden);
 	net.matGradientsB = CreateMatrix(net.nbHidden, 1);
 
-// Initialize matrix values and lasts values
-// (We chose to use the struct Matrix with (1,1) dimension instead
-// of simple pointers to doubles because we couldn't manage
-// the pointers; it didn't work otherwise
+
 	net.BiasO = CreateMatrix(1, 1);
         net.SumHOutputs = CreateMatrix(1, 1);
 	net.PreviousBiasO = CreateMatrix(1, 1);
@@ -148,8 +125,7 @@ double Sigmoid(double Sum)
 
 void ForwardPass(struct NeuralNetwork net, int inpValues, int epoch)
 {
-	// Calculus with weights and bias between input layer and
-	// hidden layer
+	//calcul output of a neurone
 	for (int h = 0; h < net.nbHidden; h++)
 	{
 		double SumIH = 0;
@@ -161,11 +137,10 @@ void ForwardPass(struct NeuralNetwork net, int inpValues, int epoch)
 		SumIH += NavMatrix(net.matBiasH, h, 0);
 		ChangeMatrix(net.matSumIH, h, 0, SumIH);
 		ChangeMatrix(net.matOutputH, h, 0, Sigmoid(SumIH));
-		// We store the sums in matrix because we need them
-		// for the gradient
+		
 	}
 	
-	// Same but between hidden layer and output layer
+	//same for hidden/output
 	double SumHO = 0;
         for (int i = 0; i < net.nbHidden; i++)
         {
@@ -179,7 +154,7 @@ void ForwardPass(struct NeuralNetwork net, int inpValues, int epoch)
 			    NavMatrix(net.FinalOutput, 0, 0) -
 			    NavMatrix(net.matAim, inpValues, 0));
 
-	// Printing the results every 1000 epoch
+	//print results every 1000 epoch (easiest)
 	if (epoch % 1000 == 0)
         {
 		if (inpValues == 0)
@@ -194,14 +169,14 @@ void ForwardPass(struct NeuralNetwork net, int inpValues, int epoch)
 
 void CalculateDerivative(struct NeuralNetwork net, int pattern)
 {
-	// Initialise the derivative of output in first position in the list.
+	//initialise the derivative of output 
     	ChangeMatrix(net.DerivativeO, 0, 0, -(NavMatrix(net.matErrors,
 				       	pattern, 0)*
 			  exp(NavMatrix(net.SumHOutputs, 0, 0))) /
 		    (pow((1 + exp(NavMatrix(net.SumHOutputs, 0, 0))), 2)));
     	for (int i = 0; i < net.nbHidden; i++)
     	{
-        	//Calculate the derivative of each
+        	//calculate the derivate of each
         	ChangeMatrix(net.matDerivatives, i, 0,
 				(exp(NavMatrix(net.matSumIH, i, 0)) /
 			pow((1 + exp(NavMatrix(net.matSumIH, i, 0))), 2)) *
@@ -213,7 +188,7 @@ void CalculateDerivative(struct NeuralNetwork net, int pattern)
 
 void CalculateGradient(struct NeuralNetwork net, int pattern)
 {
-	// Initialise the gradients for the weights input - hidden
+	//initialise the weights input/hidden
     	for (int i = 0; i < net.nbInputs; i++)
     	{
         	for (int h = 0; h < net.nbHidden; h++)
@@ -225,7 +200,7 @@ void CalculateGradient(struct NeuralNetwork net, int pattern)
         	}
 	}
 	
-	//Initialise the gradients for the bias hidden neurones
+	//initialise the bias hidden/neurones
     	for (int h = 0; h < net.nbHidden; h++)
     	{
         	ChangeMatrix(net.matGradientsB, h, 0, Sigmoid(1) *
@@ -235,7 +210,7 @@ void CalculateGradient(struct NeuralNetwork net, int pattern)
 	ChangeMatrix(net.GradientBiasOutput, 0, 0, Sigmoid(1) *
 		       	(NavMatrix(net.DerivativeO, 0, 0)));
 
-    	//Initialise the gradients for the weights hidden - output
+    	//initialise the weights hidden/output
     	for (int h = 0; h < net.nbHidden; h++)
     	{
         	ChangeMatrix(net.matGradientsHO, 0, h,
@@ -244,9 +219,9 @@ void CalculateGradient(struct NeuralNetwork net, int pattern)
     	}
 }
 
-void UpdateWeights(struct NeuralNetwork net)
+void UpdateWeights(struct NeuralNetwork net) //training function
 {
-	// Updating weights between input layer and hidden layer
+	//update weights input/ hidden 
 	for (int h = 0; h < net.nbHidden; h++)
 	{
 		for (int i = 0; i < net.nbInputs; i++)
@@ -263,7 +238,7 @@ void UpdateWeights(struct NeuralNetwork net)
 		}
 	}
 
-	// Updating weights between hidden layer and output layer
+	//update weights hidden/output
 	for (int h = 0; h < net.nbHidden; h++)
         {
         	ChangeMatrix(net.matPreviousWeightsHO, 0, h,
@@ -277,7 +252,7 @@ void UpdateWeights(struct NeuralNetwork net)
                             NavMatrix(net.matPreviousWeightsHO, 0, h)));
         } 
 
-	// Updating the biases of hidden layer
+	//update the biases of hidden 
 	for (int h = 0; h < net.nbHidden; h++)
         {
                 ChangeMatrix(net.matPreviousBiasH, h, 0,
@@ -291,7 +266,7 @@ void UpdateWeights(struct NeuralNetwork net)
                             NavMatrix(net.matPreviousBiasH, h, 0)));
         }
 	
-	// Updating the bias of the output neurone
+	//update the bias of output
 	ChangeMatrix(net.PreviousBiasO, 0, 0,
 		       	(net.LearningRate *
 			 NavMatrix(net.GradientBiasOutput, 0, 0)) +
@@ -301,7 +276,7 @@ void UpdateWeights(struct NeuralNetwork net)
 		       	+ NavMatrix(net.PreviousBiasO, 0, 0));
 }
 
-// All the backpropagation steps reunited in one function
+
 void BackPropagation(struct NeuralNetwork net, int pattern)
 {
     CalculateDerivative(net, pattern);
@@ -309,7 +284,7 @@ void BackPropagation(struct NeuralNetwork net, int pattern)
     UpdateWeights(net);
 }
 
-// Function that train the neural network
+//function to train the neural network
 void XOR(int epoch_)
 {
 	struct NeuralNetwork nettest = InitializeNetwork();

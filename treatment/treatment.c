@@ -7,7 +7,7 @@ void greyscale(SDL_Surface *img)
 {
    Uint32 pixel;
    Uint8 r;
-   Uint8 g;
+   Uint8 g:
    Uint8 b;
    int w = img -> w;
    int h = img -> h;
@@ -20,7 +20,7 @@ void greyscale(SDL_Surface *img)
       /* Apply luminance on r g b */
       pixel = get_pixel(img, i, j);
       SDL_GetRGB(pixel, img->format, &r, &g, &b);
-      Uint8 average = 0.3*r + 0.59*g + 0.11*b;
+      Uint8 average = 0.3*r + 0.59*g + 0.11*b;  //We apply this coefficients on each pixel of the image
       pixel = SDL_MapRGB(img->format,average, average, average);
       put_pixel(img,i,j,pixel);
     }
@@ -299,11 +299,11 @@ void Brightness(SDL_Surface *img, float factor)
         for(int j = 0; j < h; j++)
         {
             pixel = get_pixel(img,i,j);
-            SDL_GetRGB(pixel, img->format, &r, &g, &b);
-             r = factor * r;
+            SDL_GetRGB(pixel, img->format, &r, &g, &b);         //On obtient les valeurs rgb du pixel voulu
+             r = factor * r;                                   //On multiplie chaque valeur rgb par le meme facteur de luminosite voulu
              g = factor * g;
              b = factor * b;
-            pixel = SDL_MapRGB(img->format,r, g, b);
+            pixel = SDL_MapRGB(img->format,r, g, b);           //On applique les changements
             put_pixel(img,i,j,pixel);
         }
     }
@@ -324,7 +324,7 @@ void Contrast(SDL_Surface *img, float factor)
         {
             pixel = get_pixel(img,i,j);
             SDL_GetRGB(pixel, img->format, &r, &g, &b);
-             r = (factor * (r - 128 )+ 128);
+             r = (factor * (r - 128 )+ 128);                 //We use the formula on each rgb value of each pixel 
              g = (factor * (g - 128 )+ 128);
              b = (factor * (b - 128 )+ 128);
             pixel = SDL_MapRGB(img->format,r, g, b);
@@ -333,7 +333,7 @@ void Contrast(SDL_Surface *img, float factor)
     }
 }
 
-void draw_whit_W(SDL_Surface *img,int x,int y, int j)
+void draw_whit_W(SDL_Surface *img,int x,int y, int j) //we draw a vertical line of white pixels from the (x,j) to (y,j) pixel
 {
     Uint32 pixel;
 
@@ -344,7 +344,7 @@ void draw_whit_W(SDL_Surface *img,int x,int y, int j)
     }
 }
 
-void draw_whit_H(SDL_Surface *img, int x,int y,int i)
+void draw_whit_H(SDL_Surface *img, int x,int y,int i)//we draw a horizontal line of white pixels from the (i,x) to (i,y) pixel
 {
     Uint32 pixel;
 
@@ -515,20 +515,21 @@ void blacknwhite(SDL_Surface *img)
    {
      pixel = get_pixel(img,i,j);
      SDL_GetRGB(pixel, img->format, &r, &g, &b);
-      Uint32 average = (r + g + b) / 3;
-     if(average > 150)
+      Uint32 average = (r + g + b) / 3;           //we find the average value of the rgb values
+     if(average > 150)                            // if this average is near white the pixel is put white
+      
      {
       r = 255;
       g = 255;
       b = 255;
      }
-     else
+     else                                      //otherwise he is black
      {
       r = 0;
       g = 0;
       b = 0;
      }
-     pixel = SDL_MapRGB(img->format, r, g, b);
+     pixel = SDL_MapRGB(img->format, r, g, b); // changes are applied
      put_pixel(img, i, j, pixel);
    }
  }
