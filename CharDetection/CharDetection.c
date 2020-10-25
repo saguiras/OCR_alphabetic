@@ -6,7 +6,7 @@
 
 
 
-void draw_ligne_W(SDL_Surface *img, int i)      //fonction pour dessiner une ligne horizontale au niveau de la ligne i
+void draw_ligne_W(SDL_Surface *img, int i)      //function witch draws a horizontal line on the line i
 {
     int w = img -> w;
     Uint32 pixel;
@@ -18,7 +18,7 @@ void draw_ligne_W(SDL_Surface *img, int i)      //fonction pour dessiner une lig
     }
 }
 
-void draw_ligne_H(SDL_Surface *img, int j,int f,int l) //fonction pour dessiner une ligne verticale de f à l au niveau de la colonne j
+void draw_ligne_H(SDL_Surface *img, int j,int f,int l) //function withc draws a vertical line from the pixel (j,f) to (j,l)
 {
     Uint32 pixel;
 
@@ -30,7 +30,7 @@ void draw_ligne_H(SDL_Surface *img, int j,int f,int l) //fonction pour dessiner 
 }
 
 
-void ligne_detect(SDL_Surface* img) //fonction de detection de ligne 
+void ligne_detect(SDL_Surface* img) //line detection function
 {
     Uint32 pixel;
     Uint8 r;
