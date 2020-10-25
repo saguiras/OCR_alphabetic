@@ -14,4 +14,6 @@ void array_swap(int array[], size_t i, size_t j);
 
 void array_select_sort(int array[], size_t len);
 
+int isNumber(char s[]);
+
 # endif
