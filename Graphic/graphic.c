@@ -11,10 +11,26 @@ void window(){
 	SDL_Renderer *renderer = NULL;
 	renderer = SDL_CreateRenderer(window,-1,SDL_RENDERER_SOFTWARE);
 
-	SDL_RenderPresent(renderer);
-	SDL_RenderClear(renderer);
+	SDL_bool launched = SDL_True;
 
-	SDL_DELAY(5000);
+	while(launched){
+		SDL_Event event;
+
+		while(SDL_PollEvent(&event)){
+			switch(event.type){
+				case SDL_QUIT:
+				     launched = SDL_False;
+				     break;
+				default:
+				     break;
+			}
+		}
+	}
+
+	SDL_RenderPresent(renderer);
+	
+
+	
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 	SDL_QUIT();
