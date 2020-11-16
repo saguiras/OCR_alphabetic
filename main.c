@@ -271,7 +271,7 @@ int main(int argc, char** argv)
         return 1;
     
     }
-    else if (argv == 1)
+    else if (argc == 1)
     {
         window();
         return 0;
