@@ -8,6 +8,7 @@
 #include "CharDetection/CharDetection.h"
 #include "neural_network/neural_network_XOR.h" 
 #include "tools/display_tools.h"
+#include "Graphic/graphic.h"
 
 void help()
 {
@@ -269,6 +270,11 @@ int main(int argc, char** argv)
         printf("Unknown command.\n");
         return 1;
     
+    }
+    else if (argv == 1)
+    {
+        window();
+        return 0;
     }
     else
     {
