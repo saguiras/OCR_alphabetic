@@ -293,3 +293,43 @@ void ligne_coord(SDL_Surface* img)
     }
 }
 
+SDL_Surface* resize_caract(SDL_Surface* img)
+{
+	// the first line creates a surface , others are variables
+	SDL_Surface* img2  = SDL_Surface( 0, 16, 16, 32, 0, 0, 0, 0); 
+	int hight = img -> h;
+	int lenght = img ->w;
+	float hmul = 16./h;
+	float lmul = 16./w;
+	int i = 0;
+	int j = 0;
+	int newh;
+	int neww;
+
+	//for each pixel, check if it is black and put it in the new image to its new 
+	//place, using hmul and lmul.
+	while (i<h)
+	{
+		j = 0;
+		while (j<w)
+		{
+			Uint32 pixel = get_pixel(img, i, j);
+			Uint8 r, g, b;
+			SDL_GetRGB(pixel, image_surface->format, &r, &g, &b);
+			if (*r == 255)
+			{
+				newh = (int) (i*hmul);
+				neww = (int) (j*lmul);
+
+				put_pixel(img2, newh, neww, pixel);
+			}
+			j +=1;
+
+		
+		}
+		i +=1;
+	}
+
+return img2;
+
+}
