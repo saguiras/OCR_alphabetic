@@ -308,6 +308,7 @@ SDL_Surface* resize_caract(SDL_Surface* img)
 
 	//for each pixel, check if it is black and put it in the new image to its new 
 	//place, using hmul and lmul.
+	if (h>28){
 	while (i<h)
 	{
 		j = 0;
@@ -328,6 +329,33 @@ SDL_Surface* resize_caract(SDL_Surface* img)
 		
 		}
 		i +=1;
+	}
+	}
+	else
+	{
+        while (i<28)
+	{
+		j = 0;
+		while (j<28)
+		{
+			newh = (int) (i./hmul);
+			neww = (int) (j./lmul);
+                        Uint32 pixel = get_pixel(img, newh, neww);
+			Uint8 r, g, b;
+                        SDL_GetRGB(pixel, img->format, &r, &g, &b);
+                        if (r == 255)
+			{
+				put_pixel(img2, i, j, pixel);
+			}
+
+
+			j +=1;
+
+		
+		}
+		i +=1;
+	}
+
 	}
 
 return img2;
