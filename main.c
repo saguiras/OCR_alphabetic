@@ -65,6 +65,21 @@ int main(int argc, char** argv)
             XOR((int)strtol(argv[2], (char **)NULL, 10)+1);
             return 0;
         }
+        if(argc == 3 && !strcmp(argv[1], "char"))
+        {
+            init_sdl();
+            img = load_image(argv[2]);
+            screen_surface = SDL_SetVideoMode(img->w, img->h, 0, SDL_SWSURFACE|SDL_ANYFORMAT);
+
+            img = resize_caract(img);
+            display_image(img);
+
+            wait_for_keypressed();
+            SDL_FreeSurface(img);
+            SDL_FreeSurface(screen_surface);
+
+            return 0;
+        }
         if(argc == 4)
         {   
             init_sdl();

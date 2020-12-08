@@ -13,7 +13,7 @@ void draw_ligne_W(SDL_Surface *img, int i);
 void char_Detect(SDL_Surface* img,int f,int l);
 void ligne_detect(SDL_Surface *img);
 void ligne_coord(SDL_Surface* img);
-Sdl_Surface* resize_caract(SDL_Surface* img);
+SDL_Surface* resize_caract(SDL_Surface* img);
 
 
 

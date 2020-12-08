@@ -296,11 +296,11 @@ void ligne_coord(SDL_Surface* img)
 SDL_Surface* resize_caract(SDL_Surface* img)
 {
 	// the first line creates a surface , others are variables
-	SDL_Surface* img2  = SDL_Surface( 0, 16, 16, 32, 0, 0, 0, 0); 
-	int hight = img -> h;
-	int lenght = img ->w;
-	float hmul = 16./h;
-	float lmul = 16./w;
+	SDL_Surface* img2  = SDL_CreateRGBSurface( 0, 28, 28, 32, 0, 0, 0, 0); 
+	int h = img -> h;
+	int w = img ->w;
+	float hmul = 28./h;
+	float lmul = 28./w;
 	int i = 0;
 	int j = 0;
 	int newh;
@@ -315,8 +315,8 @@ SDL_Surface* resize_caract(SDL_Surface* img)
 		{
 			Uint32 pixel = get_pixel(img, i, j);
 			Uint8 r, g, b;
-			SDL_GetRGB(pixel, image_surface->format, &r, &g, &b);
-			if (*r == 255)
+			SDL_GetRGB(pixel, img->format, &r, &g, &b);
+			if (r == 255)
 			{
 				newh = (int) (i*hmul);
 				neww = (int) (j*lmul);
