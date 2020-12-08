@@ -338,8 +338,8 @@ SDL_Surface* resize_caract(SDL_Surface* img)
 		j = 0;
 		while (j<28)
 		{
-			newh = (int) (i./hmul);
-			neww = (int) (j./lmul);
+			newh = (int) (i/hmul);
+			neww = (int) (j/lmul);
                         Uint32 pixel = get_pixel(img, newh, neww);
 			Uint8 r, g, b;
                         SDL_GetRGB(pixel, img->format, &r, &g, &b);
