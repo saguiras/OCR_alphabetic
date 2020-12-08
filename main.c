@@ -9,6 +9,7 @@
 #include "neural_network/neural_network_XOR.h" 
 #include "tools/display_tools.h"
 #include "Graphic/graphic.h"
+#include "neural_network/neural_network.h"
 
 void help()
 {
@@ -27,6 +28,8 @@ void help()
     printf("   --img treatment (float1) (float2)  \n");
     printf("                            apply all treatment to image with contrast (float1) factor and \n");
     printf("                            brightness (float2) factor \n\n");
+    printf("   --learn                  learn the neural network\n");
+
 }
 
 int main(int argc, char** argv)
@@ -38,15 +41,24 @@ int main(int argc, char** argv)
         SDL_Surface* screen_surface;
 
 
-        if (argc == 2 && !strcmp(argv[1], "help"))
+        if (argc == 2)
         {
-            help();
-            return 0;
-        }
-        if (argc == 2 && !strcmp(argv[1], "xor"))
-        {
-            XOR(50001);
-            return 0;
+           if (!strcmp(argv[1], "help"))
+            {
+                help();
+                return 0;
+            }
+           if (!strcmp(argv[1], "xor"))
+            {
+                XOR(50001);
+                return 0;
+            }
+           if (!strcmp(argv[1], "learn"))
+            {
+                Learn();
+                return 0;
+            }
+
         }
         if(argc == 3 && !strcmp(argv[1], "xor") && isNumber(argv[2]))
         {
@@ -270,11 +282,6 @@ int main(int argc, char** argv)
         printf("Unknown command.\n");
         return 1;
     
-    }
-    else if (argc == 1)
-    {
-        window();
-        return 0;
     }
     else
     {
