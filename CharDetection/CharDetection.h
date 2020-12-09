@@ -16,7 +16,7 @@ void ligne_coord(SDL_Surface* img);
 SDL_Surface* resize_caract(SDL_Surface* img);
 int space_nbpixels(SDL_Surface img);
 int space_pixelcount(SDL_Surface* img, int i, int j);
-
+int notiscaract(SDL_Surface* img, int i, int j);
 
 
 # endif

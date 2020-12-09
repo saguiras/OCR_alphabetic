@@ -381,8 +381,63 @@ int space_pixelcount(SDL_Surface* img, int i, int j)//lenght of a space caract
 		j+=1;
 
 	}
+
 	return result;
 }
+
+int notiscaract(SDL_Surface* img, int i, int j)
+{
+	int i2 = i;
+	int i3 = i;
+	int j2 = j;
+	int j3 = j;
+	int w = img -> w;
+	int h = img -> h;
+	int _bool = 1;
+	int resultbool = 1;
+        while(_bool && j3 < w)
+	{
+                pixel = get_pixel(img, i2, j3);
+                SDL_GetRGB(pixel, img->format, &r, &g, &b);
+                if (r == 255 && g == 0 && r == 0)
+		{
+			_bool = 0;
+		}
+		j3+=1;
+	}
+	_bool = 1;
+	while(_bool && i3 < h)
+	{
+                pixel = get_pixel(img, i3, j2);
+                SDL_GetRGB(pixel, img->format, &r, &g, &b);
+                if (r == 255 && g == 0 && r == 0)
+		{
+			_bool = 0;
+		}
+		i3+=1;
+	}
+
+	while(i2<i3)
+	{
+		j2 = j;
+		while(j2<j3)
+		{
+                    pixel = get_pixel(img, i2, j2);
+                    SDL_GetRGB(pixel, img->format, &r, &g, &b);
+                    if (r == 255 && g == 255 && r == 255)
+		    {
+			   resultbool = 0;
+
+		    }
+		    j2 +=1;
+		}
+		I2+=1;
+
+	}
+	return resultbool;
+
+}
+
 
 int space_nbpixels(SDL_Surface* img)//
 {
@@ -460,7 +515,8 @@ int space_nbpixels(SDL_Surface* img)//
 		while(j<w)
 		{
 		    a = space_pixelcount(img, i, j);
-		    if()
+		    b = notiscaract(img, i, j);
+		    if(b)
 		    {
 			total_pixel += a;
 			divisor += 1;
