@@ -361,3 +361,117 @@ SDL_Surface* resize_caract(SDL_Surface* img)
 return img2;
 
 }
+
+int space_pixelcount(SDL_Surface* img, int i, int j)//lenght of a space caract
+{
+	int result = 0;
+        Uint32 pixel;
+	Uint8 r, g, b;
+	int w = img -> w;
+	int _bool = 1;
+	while(_bool && j < w)
+	{
+                pixel = get_pixel(img, i, j);
+                SDL_GetRGB(pixel, img->format, &r, &g, &b);
+                if (r == 255 && g == 0 && r == 0)
+		{
+			_bool = 0;
+		}
+		result+=1;
+		j+=1;
+
+	}
+	return result;
+}
+
+int space_nbpixels(SDL_Surface* img)//
+{
+	//variables
+	int h = img -> h;
+	int w = img -> w;
+	int i = 0;
+	int j = 0;
+	int _bool = 1;
+	Uint32 pixel;
+	Uint8 r, g, b;
+	int total_pixel;
+	int divisor;
+	int a;
+	//get go the first line of caract
+	//while(_bool)
+	//{
+	//	pixel = get_pixel(img, i, j);
+        //      SDL_GetRGB(pixel, img->format, &r, &g, &b);
+	//	if (r == 255 && g == 0 && r == 0)
+	//	{
+	//		_bool = 0;
+	//	}
+	//	i+=1;
+        //
+	//}
+	//_bool = 1;
+	//get to the first column of caract
+	//while(_bool) 
+	//{
+        //        pixel = get_pixel(img, i, j);
+        //        SDL_GetRGB(pixel, img->format, &r, &g, &b);
+	//	if (r == 255 && g == 0 && r == 0)
+	//	{
+	//		_bool = 0;
+	//	}
+	//	j+=1;
+	//}
+	while(i<h)
+	{
+		j = 0;
+                while(_bool)
+	        {
+		      if(i>=h)
+		      {
+		          break;
+		      }
+		      pixel = get_pixel(img, i, j);
+                      SDL_GetRGB(pixel, img->format, &r, &g, &b);
+		      if (r == 255 && g == 0 && r == 0)
+		      {
+		          _bool -= 1;
+		      }
+		      i+=1;
+
+	        }
+		if (i>=h)
+		{
+			break;
+		}
+	        _bool = 1;
+                while(_bool) 
+	        {
+                    pixel = get_pixel(img, i, j);
+                    SDL_GetRGB(pixel, img->format, &r, &g, &b);
+		    if (r == 255 && g == 0 && r == 0)
+		    {
+			_bool = 0;
+		    }
+		    j+=1;
+
+	        }
+		_bool = 2;
+
+		while(j<w)
+		{
+		    a = space_pixelcount(img, i, j);
+		    if()
+		    {
+			total_pixel += a;
+			divisor += 1;
+		    }
+		    j +=a;
+
+		}
+		total_pixel-=a;
+		divisor-=1;
+	}
+	return ((total_pixel/divisor)+1);
+
+
+}
