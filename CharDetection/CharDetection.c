@@ -391,6 +391,8 @@ int notiscaract(SDL_Surface* img, int i, int j)
 	int i3 = i;
 	int j2 = j;
 	int j3 = j;
+        Uint32 pixel;
+	Uint8 r, g, b;
 	int w = img -> w;
 	int h = img -> h;
 	int _bool = 1;
@@ -431,7 +433,7 @@ int notiscaract(SDL_Surface* img, int i, int j)
 		    }
 		    j2 +=1;
 		}
-		I2+=1;
+		i2+=1;
 
 	}
 	return resultbool;
