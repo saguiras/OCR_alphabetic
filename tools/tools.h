@@ -16,4 +16,8 @@ void array_select_sort(int array[], size_t len);
 
 int isNumber(char s[]);
 
+char* concat(const char *s1, const char *s2);
+
+double *create_matrix(SDL_Surface *img);
+
 # endif

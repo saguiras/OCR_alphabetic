@@ -2,9 +2,10 @@
 #define NEURAL_TOOLS_H_
 
 # include "neural_network.h"
-#include <stdio.h>
-#include <stdlib.h>
+# include <stdio.h>
+# include <stdlib.h>
 # include <err.h>
+# include "../CharDetection/CharDetection.h"
 
 // Matrix object declaration
 struct Matrix
@@ -54,6 +55,7 @@ struct Neural_Network* ExtractData ();
 double *matrixFromFile(char *filename);
 double *goalArray(char letter);
 double **goalMatrix();
-double **lettersMatrix();
-int learn();
+double **lettersMatrix(char x,char y);
+int Learn_NN();
+int launchOCR(SDL_Surface *img);
 #endif

@@ -7,7 +7,7 @@ void greyscale(SDL_Surface *img)
 {
    Uint32 pixel;
    Uint8 r;
-   Uint8 g:
+   Uint8 g;
    Uint8 b;
    int w = img -> w;
    int h = img -> h;
@@ -357,7 +357,7 @@ void draw_whit_H(SDL_Surface *img, int x,int y,int i)//we draw a horizontal line
 
 
 
-void noligne_H(SDL_Surface *img)
+void noligne_H(SDL_Surface *img)
 {
     Uint32 pixel;
     Uint8 r;

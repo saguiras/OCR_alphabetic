@@ -270,7 +270,7 @@ struct Neural_Network* ExtractData ()
   char *line = calloc(15, sizeof(char));
 
   //WeightIH
-  FILE* weightIH = fopen("neural_network/save/weightIH.w", "r");
+  FILE* weightIH = fopen("save/weightIH.w", "r");
   for(int i = 0; i < net -> nbInput; ++i)
   {
     for(int h = 0; h < net -> nbHidden; ++h)
@@ -283,7 +283,7 @@ struct Neural_Network* ExtractData ()
   fclose(weightIH);
 
   //Weight HO
-  FILE* weightHO = fopen("neural_network/save/weightHO.w", "r");
+  FILE* weightHO = fopen("save/weightHO.w", "r");
   for(int h = 0; h < net -> nbHidden; ++h)
   {
     for(int o = 0; o < net -> nbOutput; ++o)
@@ -296,7 +296,7 @@ struct Neural_Network* ExtractData ()
   fclose(weightHO);
 
   //BiasH
-  FILE* biasH = fopen("neural_network/save/biasH.b", "r");
+  FILE* biasH = fopen("save/biasH.b", "r");
   for(int h = 0; h < net -> nbHidden; ++h)
   {
     fgets(line, sizeMax, biasH);
@@ -306,7 +306,7 @@ struct Neural_Network* ExtractData ()
   fclose(biasH);
 
   //BiasO
-  FILE* biasO = fopen("neural_network/save/biasO.b", "r");
+  FILE* biasO = fopen("save/biasO.b", "r");
   for (int o = 0; o < net -> nbOutput; ++o)
   {
     fgets(line, sizeMax, biasO);
@@ -375,7 +375,7 @@ double **goalMatrix()
   return goalMatrix;
 }
 
-double **lettersMatrix()
+double **lettersMatrix(char count_maj,char count_min)
 {
   //Variables
   char majs_path[14] = "majs/0/00.txt\0";
@@ -383,7 +383,6 @@ double **lettersMatrix()
   double **lettersMatrix = malloc(sizeof(double *) * 52);
   char maj = 'A';
   char min = 'a';
-  char count = '4';
 
   for(int i = 0; i < 52; i++)
   {
@@ -392,7 +391,7 @@ double **lettersMatrix()
     {
       majs_path[5] = maj;
       majs_path[7] = maj;
-      majs_path[8] = count;
+      majs_path[8] = count_maj;
       //printf("%s\n",majs_path);
       lettersMatrix[i] = matrixFromFile(majs_path);
       maj++;
@@ -400,10 +399,9 @@ double **lettersMatrix()
     }
     else if(i >= 26*1)
     {
-      count = '3';
       mins_path[5] = min;
       mins_path[7] = min;
-      mins_path[8] = count;
+      mins_path[8] = count_min;
       //printf("%s\n",mins_path);
       lettersMatrix[i] = matrixFromFile(mins_path);
       min++;
@@ -413,13 +411,76 @@ double **lettersMatrix()
   return lettersMatrix;
 }
 
+struct Neural_Network* Extract_Data ()
+{
+  //CREATE NN
+  struct Neural_Network *net = malloc(sizeof(struct Neural_Network));
+  net -> nbInput = 28*28; //size of imgs
+  net -> nbHidden = 20;
+  net -> nbOutput = 52; //26*2 letters
+  net -> str = malloc(sizeof(char)*1200);
+  net -> str = "\0";
+
+  int sizeMax = 15;
+  char *line = calloc(15, sizeof(char));
+
+  //WeightIH
+  FILE* weightIH = fopen("neural_network/save/weightIH.w", "r");
+  for(int i = 0; i < net -> nbInput; ++i)
+  {
+    for(int h = 0; h < net -> nbHidden; ++h)
+    {
+      fgets(line, sizeMax, weightIH);
+      strtok(line, "\n");
+      net -> WeightIH[i][h] = atof(line);
+    }
+  }
+  fclose(weightIH);
+
+  //Weight HO
+  FILE* weightHO = fopen("neural_network/save/weightHO.w", "r");
+  for(int h = 0; h < net -> nbHidden; ++h)
+  {
+    for(int o = 0; o < net -> nbOutput; ++o)
+    {
+        fgets(line, sizeMax, weightHO);
+        strtok(line, "\n");
+        net -> WeightHO[h][o] = atof(line);
+    }
+  }
+  fclose(weightHO);
+
+  //BiasH
+  FILE* biasH = fopen("neural_network/save/biasH.b", "r");
+  for(int h = 0; h < net -> nbHidden; ++h)
+  {
+    fgets(line, sizeMax, biasH);
+    strtok(line, "\n");
+    net -> BiasH[h] = atof(line);
+  }
+  fclose(biasH);
+
+  //BiasO
+  FILE* biasO = fopen("neural_network/save/biasO.b", "r");
+  for (int o = 0; o < net -> nbOutput; ++o)
+  {
+    fgets(line, sizeMax, biasO);
+    strtok(line, "\n");
+    net -> BiasO[o] = atof(line);
+  }
+  fclose(biasO);
+
+  return net;
+}
+
+
 //Colors for print
 #define KRED  "\x1B[31m"
 #define KGRN  "\x1B[32m"
 #define KWHT  "\x1B[37m"
 
 
-int Learn()
+int Learn_NN()
 {
 	//Variables
 	int nbEpoch = 5000;
@@ -433,10 +494,13 @@ int Learn()
 
 	//Initialize all goals & letters
 	double **goal = goalMatrix();
-	double **letters = lettersMatrix();
 
-	for (int epoch = 0; epoch < nbEpoch; epoch++)
-	{
+	for (int epoch = 0; epoch <= nbEpoch; epoch++)
+	{               
+                for (int i = 0; i < 4; i++)
+                {
+                    double **letters = lettersMatrix(i +'0',i +'0');
+   
 			currentChar = 0;
 			for (int l = 0; l < nbLetters; l++)
 			{
@@ -470,14 +534,25 @@ int Learn()
 					}
 					printf("%s",KWHT);
 			}
+                }
       if(net->MaxErrorRate<0.0005 && net->MaxErrorRate != 0.0)
       {
-         break;
+         //break;
       }
 			net -> MaxErrorRate = 0.0;
 	}
   printf("Save data...\n");
 	SaveData(net);
   printf("Learn finish\n");
+	return EXIT_SUCCESS;
+}
+
+int launchOCR(SDL_Surface *img)
+{
+  	Initialisation_Data();
+  	ligne_detect(img);
+        ligne_coord(img);  
+	print_str();
+
 	return EXIT_SUCCESS;
 }
