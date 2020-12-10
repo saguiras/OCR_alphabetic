@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 # include "CharDetection.h"
-=======
- include "CharDetection.h"
->>>>>>> 33179728731f8b084f736007db1f300ff0ade152
 struct Neural_Network* nett;
 int u;
 
@@ -19,11 +15,7 @@ void Initialisation_Data ()
 
   int sizeMax = 15;
   char *line = calloc(15, sizeof(char));
-<<<<<<< HEAD
- 
-=======
-
->>>>>>> 33179728731f8b084f736007db1f300ff0ade152
+  
   //WeightIH
   FILE* weightIH = fopen("neural_network/save/weightIH.w", "r");
   for(int i = 0; i < net -> nbInput; ++i)
@@ -36,11 +28,7 @@ void Initialisation_Data ()
     }
   }
   fclose(weightIH);
-<<<<<<< HEAD
- 
-=======
-
->>>>>>> 33179728731f8b084f736007db1f300ff0ade152
+  
   //Weight HO
   FILE* weightHO = fopen("neural_network/save/weightHO.w", "r");
   for(int h = 0; h < net -> nbHidden; ++h)
@@ -100,6 +88,7 @@ void draw_ligne_H(SDL_Surface *img, int j,int f,int l) //function withc draws a 
         put_pixel(img,j,i,pixel);
     }
 }
+
 void ligne_detect(SDL_Surface* img) //line detection function
 {
     Uint32 pixel;
@@ -109,7 +98,6 @@ void ligne_detect(SDL_Surface* img) //line detection function
     int h = img->h;
     int w = img->w;
     int inligne = 0;
-
     for (int i = 0; i < h; i++)
     {
         if (!inligne)
@@ -118,7 +106,6 @@ void ligne_detect(SDL_Surface* img) //line detection function
             {
                 pixel = get_pixel(img, j, i);
                 SDL_GetRGB(pixel, img->format, &r, &g, &b);
-
                 if (!r && !g && !b) //if the pixel is black
                 {
                     if (i == 0)  //if this is the first line we draw a horizontal line
@@ -131,7 +118,6 @@ void ligne_detect(SDL_Surface* img) //line detection function
                         inligne = 1;
                     }
                 }
-
             }
         }
         if (inligne)
@@ -140,98 +126,47 @@ void ligne_detect(SDL_Surface* img) //line detection function
             for (j = 0; j < w; j++)
             {
                 pixel = get_pixel(img, j, i);
+                SDL_GetRGB(pixel, img->format, &r, &g, &b);
+                if (!r && !g && !b) //if a pixel is black on the line we cut the process for this line
+                {
+                    break;
+                }
+            }
+            if (j > w - 1)
+            {
+                draw_ligne_W(img, i);
+                
+                int disection = 0;
+                if (i+1 < h)
+                {
+                    for (int x = 0; x < w; x++)
+                    {            
+                        pixel = get_pixel(img, x, i+1);
                         SDL_GetRGB(pixel, img->format, &r, &g, &b);
-
                         if (!r && !g && !b)
                         {
                             disection = 1;
                             break;
                         }
                     }
-
                 }
-
+                
                 if (disection)//if a pixel is black on this and this is the lowest one we draw a horizontal line under it
                 {
                     draw_ligne_W(img, i+1);
                     i += 1;
                 }
                 else
-                {
+                { 
                     inligne = 0;
-                }
+                }                
             }
         }
     }
-
 }
 
 SDL_Surface* resize_caract(SDL_Surface* img)
 {
-<<<<<<< HEAD
-	// the first line creates a surface , others are variables
-	SDL_Surface* img2  = SDL_CreateRGBSurface( 0, 28, 28, 32, 0, 0, 0, 0);
-	int h = img -> h;
-	int w = img ->w;
-	float hmul = 28./h;
-	float lmul = 28./w;
-	int i = 0;
-	int j = 0;
-	int newh;
-	int neww;
-
-	//for each pixel, check if it is black and put it in the new image to its new
-	//place, using hmul and lmul.
-	if (h>28){
-	while (i<h)
-	{
-		j = 0;
-		while (j<w)
-		{
-			Uint32 pixel = get_pixel(img, i, j);
-			Uint8 r, g, b;
-			SDL_GetRGB(pixel, img->format, &r, &g, &b);
-			if (r == 255)
-			{
-				newh = (int) (i*hmul);
-				neww = (int) (j*lmul);
-
-				put_pixel(img2, newh, neww, pixel);
-			}
-			j +=1;
-
-
-		}
-		i +=1;
-	}
-	}
-	else
-	{
-        while (i<28)
-	{
-		j = 0;
-		while (j<28)
-		{
-			newh = (int) (i/hmul);
-			neww = (int) (j/lmul);
-                        Uint32 pixel = get_pixel(img, newh, neww);
-			Uint8 r, g, b;
-                        SDL_GetRGB(pixel, img->format, &r, &g, &b);
-                        if (r == 255)
-			{
-				put_pixel(img2, i, j, pixel);
-			}
-
-
-			j +=1;
-
-
-		}
-		i +=1;
-	}
-
-	}
-=======
         // the first line creates a surface , others are variables
         SDL_Surface* img2  = SDL_CreateRGBSurface( 0, 28, 28, 32, 0, 0, 0, 0);
         int h = img -> h;
@@ -293,7 +228,6 @@ SDL_Surface* resize_caract(SDL_Surface* img)
         }
 
         }
->>>>>>> 33179728731f8b084f736007db1f300ff0ade152
 
 return img2;
 
@@ -367,11 +301,7 @@ void Char_Detect(SDL_Surface* img,int f,int l) //character recognition function
     {
         int f_array[l-f-1];
         int l_array[l-f-1];
-<<<<<<< HEAD
-        if (!inchar) 
-=======
         if (!inchar)
->>>>>>> 33179728731f8b084f736007db1f300ff0ade152
         {
             for (int j = f; j < l; j++)
             {
@@ -471,15 +401,6 @@ void Char_Detect(SDL_Surface* img,int f,int l) //character recognition function
             }
             if (two_char)//if the two chars are distincts char we draw a vertical break line
             {
-<<<<<<< HEAD
-                SDL_Surface* char_ = coord_to_sdl(img,x,f,i,l);  
-                char_ = increaseChar(char_);
-                char st[5];
-                itoa(u, st);
-               
-
-	        SDL_SaveBMP(char_, concat("out/", st));
-=======
                 SDL_Surface* char_ = coord_to_sdl(img,x,f,i,l);
                 char_ = increaseChar(char_);
                 char st[5];
@@ -487,7 +408,6 @@ void Char_Detect(SDL_Surface* img,int f,int l) //character recognition function
 
 
                 SDL_SaveBMP(char_, concat("out/", st));
->>>>>>> 33179728731f8b084f736007db1f300ff0ade152
                 u++;
                 double *letter = create_matrix(char_);
                 char res = DetectText(nett, letter);
@@ -498,6 +418,7 @@ void Char_Detect(SDL_Surface* img,int f,int l) //character recognition function
 
                 inchar =0;
                 draw_ligne_H(img, i, f, l);
+
             }
 
             for (int j = 0;j <= h;j++)
@@ -575,7 +496,6 @@ int space_pixelcount(SDL_Surface* img, int i, int j)//lenght of a space caract
                 }
                 result+=1;
                 j+=1;
-<<<<<<< HEAD
 
         }
 
@@ -635,67 +555,6 @@ int notiscaract(SDL_Surface* img, int i, int j)
         }
         return resultbool;
 
-=======
-
-        }
-
-        return result;
-}
-
-int notiscaract(SDL_Surface* img, int i, int j)
-{
-        int i2 = i;
-        int i3 = i;
-        int j2 = j;
-        int j3 = j;
-        Uint32 pixel;
-        Uint8 r, g, b;
-        int w = img -> w;
-        int h = img -> h;
-        int _bool = 1;
-        int resultbool = 1;
-        while(_bool && j3 < w)
-        {
-                pixel = get_pixel(img, i2, j3);
-                SDL_GetRGB(pixel, img->format, &r, &g, &b);
-                if (r == 255 && g == 0 && r == 0)
-                {
-                        _bool = 0;
-                }
-                j3+=1;
-        }
-        _bool = 1;
-        while(_bool && i3 < h)
-        {
-                pixel = get_pixel(img, i3, j2);
-                SDL_GetRGB(pixel, img->format, &r, &g, &b);
-                if (r == 255 && g == 0 && r == 0)
-                {
-                        _bool = 0;
-                }
-                i3+=1;
-        }
-
-        while(i2<i3)
-        {
-                j2 = j;
-                while(j2<j3)
-                {
-                    pixel = get_pixel(img, i2, j2);
-                    SDL_GetRGB(pixel, img->format, &r, &g, &b);
-                    if (r == 255 && g == 255 && r == 255)
-                    {
-                           resultbool = 0;
-
-                    }
-                    j2 +=1;
-                }
-                i2+=1;
-
-        }
-        return resultbool;
-
->>>>>>> 33179728731f8b084f736007db1f300ff0ade152
 }
 
 
@@ -708,11 +567,7 @@ int space_nbpixels(SDL_Surface* img)//
         int j = 0;
         int _bool = 1;
         Uint32 pixel;
-<<<<<<< HEAD
         Uint8 r, g, b;
-=======
-       Uint8 r, g, b;
->>>>>>> 33179728731f8b084f736007db1f300ff0ade152
         int total_pixel;
         int divisor;
         int a;
