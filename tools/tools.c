@@ -105,3 +105,38 @@ int isNumber(char s[])
     }
     return 1;
 }
+
+char* concat(const char *s1, const char *s2)
+{
+    //+1 for the null-terminator
+    char *result = malloc(strlen(s1) + strlen(s2) + 1);
+
+    //in real code you would check for errors in malloc here
+    strcpy(result, s1);
+    strcat(result, s2);
+    return result;
+}
+
+double *create_matrix(SDL_Surface *img)
+{
+  //Variables
+  double *letterMatrix = malloc(sizeof(double) * 28 * 28);
+  Uint8 r;
+  Uint8 g;
+  Uint8 b;
+
+  for(int i = 0; i < img -> h; i++)
+  {
+      for(int j = 0; j < img -> w; j++)
+      {
+          Uint32 pixel = get_pixel(img, j, i);
+          SDL_GetRGB(pixel, img -> format, &r, &g, &b);
+          if(r == 0 && g == 0 && b == 0)
+              letterMatrix[j + i * img -> w] = 1;
+          else
+              letterMatrix[j + i * img -> w] = 0;
+      }
+  }
+  return letterMatrix;
+}
+

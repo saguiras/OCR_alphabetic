@@ -55,7 +55,7 @@ int main(int argc, char** argv)
             }
            if (!strcmp(argv[1], "learn"))
             {
-                Learn();
+                Learn_NN();
                 return 0;
             }
 
@@ -228,6 +228,41 @@ int main(int argc, char** argv)
 
                 return 0;
             }
+            if (!strcmp(argv[2], "l"))
+            {
+                struct Neural_Network *net = ExtractData();
+                SDL_Surface* char_ = increaseChar(img);
+                double *letter = create_matrix(char_);
+                char res = DetectText(net, letter);
+                char str[2] = "\0";
+                str[0] = res;
+                printf("-> %s\n",str);
+
+
+
+                display_image(img);
+                wait_for_keypressed();
+
+                SDL_FreeSurface(img);
+                SDL_FreeSurface(screen_surface);
+
+                return 0;
+            }
+            if (!strcmp(argv[2], "ocr"))
+            {
+
+                launchOCR(img);
+
+                display_image(img);
+                wait_for_keypressed();
+
+                SDL_FreeSurface(img);
+                SDL_FreeSurface(screen_surface);
+
+                return 0;
+            }
+
+
 
 
             printf("Unknown command.\n");
@@ -277,11 +312,6 @@ int main(int argc, char** argv)
                 display_image(img);
                 wait_for_keypressed();
 
-                ligne_detect(img);
-                ligne_coord(img);
-
-                display_image(img);
-                wait_for_keypressed();
 
                 SDL_SaveBMP(img, "out.jpg");
                 SDL_FreeSurface(img);
