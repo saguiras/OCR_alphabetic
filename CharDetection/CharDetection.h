@@ -6,7 +6,11 @@
 # include "SDL/SDL.h"
 # include "SDL/SDL_image.h"
 # include "../tools/tools.h"
+<<<<<<< HEAD
 # include "../neural_network/neural_network_char.h" 
+=======
+# include "../neural_network/neural_network_char.h"
+>>>>>>> 33179728731f8b084f736007db1f300ff0ade152
 
 void Initialisation_Data ();
 void draw_ligne_H(SDL_Surface *img, int j,int f,int l);
