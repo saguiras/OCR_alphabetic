@@ -8,7 +8,7 @@
     <property name="window-position">center</property>
     <property name="default-width">720</property>
     <property name="default-height">480</property>
-    <property name="icon-name">Menu</property>
+    <property name="icon">icone.png</property>
     <child>
       <object class="GtkFixed">
         <property name="visible">True</property>
@@ -92,5 +92,8 @@
         </child>
       </object>
     </child>
+    <style>
+      <class name=".color {background-color: black}"/>
+    </style>
   </object>
 </interface>
