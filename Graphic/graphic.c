@@ -1,7 +1,4 @@
-#include <gtk/gtk.h>
-#include <SDL/SDL.h>
-#include "../neural_network/neural_Tools.h"
-#include "../tools/tools.h"
+#include "graphic.h"
 
 GtkWidget *loading_spin ;
 GtkWidget *file_chooser;
@@ -19,7 +16,7 @@ int main(int argc, char *argv[])
     window = GTK_WIDGET(gtk_builder_get_object(builder, "Menu"));
     
     gtk_builder_connect_signals(builder, NULL);
-    loading_spin = GtK_WIDGET(gtk_builder_get_object(builder, "loading_spin"));
+    loading_spin = GTK_WIDGET(gtk_builder_get_object(builder, "loading_spin"));
 
     g_object_unref(builder);
 
