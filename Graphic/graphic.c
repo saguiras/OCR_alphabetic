@@ -6,7 +6,7 @@ GtkWidget *contrast;
 GtkWidget *brightness;
 GtkWidget *wimage;
 
-int main(int argc, char *argv[])
+int launch_menu()
 {
     GtkBuilder      *builder; 
     GtkWidget       *window;
@@ -33,9 +33,9 @@ void on_Menu_destroy()
 }
 
 void on_Training_Button_clicked(){
-    gtk_spinner_start(loading_spin);
+    gtk_spinner_start(GTK_SPINNER(loading_spin));
     Learn_NN();
-    gtk_spinner_stop(loading_spin);
+    gtk_spinner_stop(GTK_SPINNER(loading_spin));
 }
 
 
@@ -63,16 +63,17 @@ void on_launch_automatic_clicked(){
 
 
 void file_selected(){
-    char *filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(filechooser));
+    char *filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(file_chooser));
     gtk_image_set_from_file(GTK_IMAGE(wimage),filename);
 }
 
 void on_treat_button_clicked(){
+    char *filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(file_chooser));
     SDL_Surface *surf = load_image(filename);
     greyscale(surf);
-    Contrast(surf,float(gtk_entry_get_text(contrast)));
+    Contrast(surf,atof(gtk_entry_get_text(GTK_ENTRY(contrast))));
     blur(surf);
-    Brightness(surf,float(gtk_entry_get_text(brightness)));
+    Brightness(surf,atof(gtk_entry_get_text(GTK_ENTRY(brightness))));
     blacknwhite(surf);
 }
 

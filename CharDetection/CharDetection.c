@@ -268,7 +268,7 @@ SDL_Surface* Resize(SDL_Surface *img)
   SDL_SoftStretch(img, NULL, dest, NULL);
   return dest;
 }
-char* itoa(int i, char b[]){
+char* Itoa(int i, char b[]){
     char const digit[] = "0123456789";
     char* p = b;
     if(i<0){
@@ -404,7 +404,7 @@ void Char_Detect(SDL_Surface* img,int f,int l) //character recognition function
                 SDL_Surface* char_ = coord_to_sdl(img,x,f,i,l);
                 char_ = increaseChar(char_);
                 char st[5];
-                itoa(u, st);
+                Itoa(u, st);
 
 
                 SDL_SaveBMP(char_, concat("out/", st));

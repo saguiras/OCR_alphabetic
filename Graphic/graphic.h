@@ -13,8 +13,9 @@
 #include "../neural_network/neural_network_XOR.h"
 #include "../tools/display_tools.h"
 #include "../neural_network/neural_network.h"
+#include "../neural_network/neural_Tools.h"
 
-int main(int argc, char *argv[]);
+int launch_menu();
 void on_Menu_destroy();
 void on_Training_Button_clicked();
 void on_Automatic_Button_clicked();
