@@ -134,7 +134,7 @@ Treatment</property>
             <property name="can_focus">True</property>
             <property name="shadow_type">in</property>
             <child>
-              <object class="GtkViewport">
+              <object class="GtkViewport" id="text_view">
                 <property name="width_request">620</property>
                 <property name="height_request">376</property>
                 <property name="visible">True</property>

@@ -63,14 +63,12 @@ void on_automatic_clicked(){
 void on_launch_automatic_clicked(){
     GtkBuilder *builder;
     GtkWidget  *result;
-    //GtkWidget  *textbox;
-    //GtkWidget  *textbuffer;
+    GtkTextBuffer *buffer;
     
 
     builder = gtk_builder_new_from_file("glade/result.glade");
     result = GTK_WIDGET(gtk_builder_get_object(builder, "result"));
-    //textbox = GTK_WIDGET(gtk_builder_get_object(builder,"textbox"));
-    //textbuffer = GTK_WIDGET(gtk_builder_get_object(builder,"textbuffer1"));
+    buffer = GTK_TEXT_BUFFER(gtk_builder_get_object(builder,"textbuffer1"));
 
 
 
@@ -78,7 +76,10 @@ void on_launch_automatic_clicked(){
     g_object_unref(builder);
     gtk_widget_show(result);
 
-    //gtk_text_buffer_set_text(textbuffer,,-1);
+    //SDL_RWops *file = SDL_RWFromFile(gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(file_chooser)),"rb");
+    //SDL_Surface *image = SDL_LoadBMP_RW(file,1);
+    gtk_text_buffer_set_text(buffer,launchOCR(IMG_Load(gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(file_chooser)))),-1);
+    
 
 
 }
