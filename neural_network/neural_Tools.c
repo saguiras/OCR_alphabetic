@@ -414,10 +414,15 @@ double **lettersMatrix(char count_maj,char count_min)
 struct Neural_Network* Extract_Data ()
 {
   //CREATE NN
-  struct Neural_Network *net = malloc(sizeof(struct Neural_Network));
+  struct Neural_Network *net = NULL;
+  net = malloc(sizeof(struct Neural_Network));
   net -> nbInput = 28*28; //size of imgs
   net -> nbHidden = 20;
   net -> nbOutput = 52; //26*2 letters
+  net -> ErrorRate = 0.0;
+  net -> MaxErrorRate = 0.0;
+  net -> eta = 0.3;
+  net -> alpha = 0.9;
   net -> str = malloc(sizeof(char)*1200);
   net -> str = "\0";
 
@@ -433,6 +438,7 @@ struct Neural_Network* Extract_Data ()
       fgets(line, sizeMax, weightIH);
       strtok(line, "\n");
       net -> WeightIH[i][h] = atof(line);
+      net -> dWeightIH[i][h] = 0.0;
     }
   }
   fclose(weightIH);
@@ -446,17 +452,18 @@ struct Neural_Network* Extract_Data ()
         fgets(line, sizeMax, weightHO);
         strtok(line, "\n");
         net -> WeightHO[h][o] = atof(line);
+        net -> dWeightHO[h][o] = 0.0;
     }
   }
   fclose(weightHO);
 
-  //BiasH
   FILE* biasH = fopen("neural_network/save/biasH.b", "r");
   for(int h = 0; h < net -> nbHidden; ++h)
   {
     fgets(line, sizeMax, biasH);
     strtok(line, "\n");
     net -> BiasH[h] = atof(line);
+    
   }
   fclose(biasH);
 
@@ -467,6 +474,7 @@ struct Neural_Network* Extract_Data ()
     fgets(line, sizeMax, biasO);
     strtok(line, "\n");
     net -> BiasO[o] = atof(line);
+    net -> dOutputO[o] = 0.0;
   }
   fclose(biasO);
 
@@ -483,21 +491,21 @@ struct Neural_Network* Extract_Data ()
 int Learn_NN()
 {
 	//Variables
-	int nbEpoch = 5000;
+	int nbEpoch = 1000;
 	int nbLetters = 26 * 1 + 26 * 1; //5 fonts for uppers & 4 for lowers
 	int currentChar = 0;
 	//int count = 0;
 	srand(time(NULL));
 
 	//Intialize network
-	struct Neural_Network *net = InitializeNetwork();
+	struct Neural_Network *net = Extract_Data();
 
 	//Initialize all goals & letters
 	double **goal = goalMatrix();
 
 	for (int epoch = 0; epoch <= nbEpoch; epoch++)
 	{               
-                for (int i = 0; i < 4; i++)
+                for (int i = 4; i < 5; i++)
                 {
                     double **letters = lettersMatrix(i +'0',i +'0');
    

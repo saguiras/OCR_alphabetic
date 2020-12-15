@@ -232,11 +232,27 @@ SDL_Surface* resize_caract(SDL_Surface* img)
 return img2;
 
 }
+
+int max(int a,int b)
+{
+    return a > b ? a : b;
+}
 SDL_Surface* coord_to_sdl(SDL_Surface* img,int x,int y,int u,int v)
 {
     int w = u-x;
     int h = v-y;
-    SDL_Surface* img2  = SDL_CreateRGBSurface( 0, w, h, 32, 0, 0, 0, 0);
+    int a = max(h,w);
+    a *= 1.1; 
+    SDL_Surface* img2  = SDL_CreateRGBSurface( 0, a, a, 32, 0, 0, 0, 0);
+    for(int i = 0; i < a ; i++)
+    {
+        for(int j = 0; j < a; j++)
+        {
+            Uint32 pixel = SDL_MapRGB(img->format,255, 255, 255);
+            put_pixel(img2, i, j, pixel);
+        }
+    }
+
     for(int i = 0; i < w ; i++)
     {
         for(int j = 0; j < h; j++)
@@ -244,7 +260,7 @@ SDL_Surface* coord_to_sdl(SDL_Surface* img,int x,int y,int u,int v)
             Uint32 pixel = get_pixel(img, i+x, j+y);
             Uint8 r, g, b;
             SDL_GetRGB(pixel, img->format, &r, &g, &b);
-            put_pixel(img2, i, j, pixel);
+            put_pixel(img2, (a-w)/2 + i, (a-h)/2 + j, pixel);
         }
     }
     return img2;
@@ -259,16 +275,8 @@ SDL_Surface* increaseChar(SDL_Surface *img)
   SDL_SoftStretch(img, NULL, dest, NULL);
   return dest;
 }
-SDL_Surface* Resize(SDL_Surface *img)
-{
-  SDL_Surface *dest = SDL_CreateRGBSurface(SDL_HWSURFACE,
-                        576,
-                        460,
-                        img->format->BitsPerPixel,0,0,0,0);
-  SDL_SoftStretch(img, NULL, dest, NULL);
-  return dest;
-}
-char* Itoa(int i, char b[]){
+
+char* itoa(int i, char b[]){
     char const digit[] = "0123456789";
     char* p = b;
     if(i<0){
@@ -296,7 +304,9 @@ void Char_Detect(SDL_Surface* img,int f,int l) //character recognition function
     int w = img->w;
     int inchar = 0; //variable to detect if ta line has been drawn before 
     int x;
+    int o = 0;
 
+    nett -> str = concat(nett -> str, "\n");
     for (int i = 0; i < w; i++)
     {
         int f_array[l-f-1];
@@ -307,7 +317,6 @@ void Char_Detect(SDL_Surface* img,int f,int l) //character recognition function
             {
                 pixel = get_pixel(img, i, j);
                 SDL_GetRGB(pixel, img->format, &r, &g, &b);
-
 
                 if (!r && !g && !b) // if the pixel is black
                 {
@@ -335,12 +344,17 @@ void Char_Detect(SDL_Surface* img,int f,int l) //character recognition function
                         }
 
                     }
+                    break;
                 }
             }
+            if( o == 4)
+                nett -> str = concat(nett -> str, " ");
+            o++;
         }
 
         if (inchar)//if a line has been drawn
         {
+            o = 0;
             int h = 0;
             int two_char = 1;
 
@@ -404,7 +418,7 @@ void Char_Detect(SDL_Surface* img,int f,int l) //character recognition function
                 SDL_Surface* char_ = coord_to_sdl(img,x,f,i,l);
                 char_ = increaseChar(char_);
                 char st[5];
-                Itoa(u, st);
+                itoa(u, st);
 
 
                 SDL_SaveBMP(char_, concat("out/", st));
@@ -648,6 +662,5 @@ int space_nbpixels(SDL_Surface* img)//
                 divisor-=1;
         }
         return ((total_pixel/divisor)+1);
-
 
 }

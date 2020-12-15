@@ -11,7 +11,7 @@ struct Neural_Network* InitializeNetwork()
   net -> nbOutput = 52;
   net -> ErrorRate = 0.0;
   net -> MaxErrorRate = 0.0;
-  net -> eta = 0.5;
+  net -> eta = 0.3;
   net -> alpha = 0.9;
   net -> str = "";
 

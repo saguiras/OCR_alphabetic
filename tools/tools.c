@@ -132,10 +132,17 @@ double *create_matrix(SDL_Surface *img)
           Uint32 pixel = get_pixel(img, j, i);
           SDL_GetRGB(pixel, img -> format, &r, &g, &b);
           if(r == 0 && g == 0 && b == 0)
+          {
               letterMatrix[j + i * img -> w] = 1;
+              printf("1");
+          }
           else
+          {
               letterMatrix[j + i * img -> w] = 0;
+              printf("0");
+          }
       }
+      printf("\n");
   }
   return letterMatrix;
 }
