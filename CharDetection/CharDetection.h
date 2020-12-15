@@ -15,7 +15,7 @@ void char_Detect(SDL_Surface* img,int f,int l);
 SDL_Surface* increaseChar(SDL_Surface *img);
 void ligne_detect(SDL_Surface *img);
 void ligne_coord(SDL_Surface* img);
-void print_str();
+char* print_str();
 SDL_Surface* resize_caract(SDL_Surface* img);
 
 

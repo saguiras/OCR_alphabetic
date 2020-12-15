@@ -134,15 +134,15 @@ double *create_matrix(SDL_Surface *img)
           if(r == 0 && g == 0 && b == 0)
           {
               letterMatrix[j + i * img -> w] = 1;
-              printf("1");
+              //printf("1");
           }
           else
           {
               letterMatrix[j + i * img -> w] = 0;
-              printf("0");
+              //printf("0");
           }
       }
-      printf("\n");
+      //printf("\n");
   }
   return letterMatrix;
 }

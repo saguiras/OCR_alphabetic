@@ -257,7 +257,7 @@ int main(int argc, char** argv)
             if (!strcmp(argv[2], "ocr"))
             {
 
-                launchOCR(img);
+                printf("%s",launchOCR(img));
 
                 display_image(img);
                 wait_for_keypressed();

@@ -427,7 +427,7 @@ void Char_Detect(SDL_Surface* img,int f,int l) //character recognition function
                 char res = DetectText(nett, letter);
                 char str[2] = "\0";
                 str[0] = res;
-                printf("%s -> %s\n",st,str);
+                //printf("%s -> %s\n",st,str);
                 nett -> str = concat(nett -> str, str);
 
                 inchar =0;
@@ -489,9 +489,9 @@ void ligne_coord(SDL_Surface* img)
     }
 }
 
-void print_str()
+char* print_str()
 {
-    printf("%s", nett->str);
+    return nett->str;
 }
 int space_pixelcount(SDL_Surface* img, int i, int j)//lenght of a space caract
 {

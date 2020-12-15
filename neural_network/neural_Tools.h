@@ -57,5 +57,5 @@ double *goalArray(char letter);
 double **goalMatrix();
 double **lettersMatrix(char x,char y);
 int Learn_NN();
-int launchOCR(SDL_Surface *img);
+char* launchOCR(SDL_Surface *img);
 #endif

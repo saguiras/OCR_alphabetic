@@ -555,12 +555,10 @@ int Learn_NN()
 	return EXIT_SUCCESS;
 }
 
-int launchOCR(SDL_Surface *img)
+char* launchOCR(SDL_Surface *img)
 {
   	Initialisation_Data();
   	ligne_detect(img);
         ligne_coord(img);  
-	print_str();
-
-	return EXIT_SUCCESS;
+	return print_str();
 }
