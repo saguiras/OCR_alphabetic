@@ -29,6 +29,7 @@ void help()
     printf("                            apply all treatment to image with contrast (float1) factor and \n");
     printf("                            brightness (float2) factor \n\n");
     printf("   --learn                  learn the neural network\n");
+    printf("   --graphic                enter graphic mode\n");
 
 }
 
@@ -56,6 +57,11 @@ int main(int argc, char** argv)
            if (!strcmp(argv[1], "learn"))
             {
                 Learn_NN();
+                return 0;
+            }
+            if (!strcmp(argv[1],"graphic"))
+            {
+                launch_menu();
                 return 0;
             }
 

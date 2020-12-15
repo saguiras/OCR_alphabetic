@@ -11,11 +11,14 @@ int launch_menu()
     GtkBuilder      *builder; 
     GtkWidget       *window;
 
+    gtk_init(NULL,NULL);
+
     builder = gtk_builder_new_from_file("glade/Menu.glade");
 
     window = GTK_WIDGET(gtk_builder_get_object(builder, "Menu"));
     
     gtk_builder_connect_signals(builder, NULL);
+
     loading_spin = GTK_WIDGET(gtk_builder_get_object(builder, "loading_spin"));
 
     g_object_unref(builder);
@@ -32,14 +35,14 @@ void on_Menu_destroy()
     gtk_main_quit();
 }
 
-void on_Training_Button_clicked(){
+void on_training_clicked(){
     gtk_spinner_start(GTK_SPINNER(loading_spin));
     Learn_NN();
     gtk_spinner_stop(GTK_SPINNER(loading_spin));
 }
 
 
-void on_Automatic_Button_clicked(){
+void on_automatic_clicked(){
     GtkBuilder *builder;
     GtkWidget  *Automatic;
     
@@ -58,6 +61,19 @@ void on_Automatic_Button_clicked(){
 }
 
 void on_launch_automatic_clicked(){
+    GtkBuilder *builder;
+    GtkWidget  *result;
+    
+
+    builder = gtk_builder_new_from_file("glade/result.glade");
+    result = GTK_WIDGET(gtk_builder_get_object(builder, "result"));
+    
+
+
+
+    gtk_builder_connect_signals(builder, NULL);
+    g_object_unref(builder);
+    gtk_widget_show(result);
 
 }
 

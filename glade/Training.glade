@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.38.2 -->
+<interface>
+  <requires lib="gtk+" version="3.24"/>
+  <object class="GtkWindow" id="Training">
+    <property name="can-focus">False</property>
+    <property name="title" translatable="yes">Training_Window</property>
+    <property name="window-position">center-always</property>
+    <property name="icon">icone.png</property>
+    <child>
+      <object class="GtkFixed">
+        <property name="visible">True</property>
+        <property name="can-focus">False</property>
+        <child>
+          <object class="GtkLabel" id="Trainin">
+            <property name="width-request">100</property>
+            <property name="height-request">80</property>
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="label" translatable="yes">Training</property>
+          </object>
+          <packing>
+            <property name="x">173</property>
+            <property name="y">43</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>

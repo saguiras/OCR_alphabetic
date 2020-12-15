@@ -1,9 +1,9 @@
-CC=gcc -rdynamic
+CC=gcc 
 
 CPPFLAGS =  `pkg-config gtk+-3.0 --cflags sdl` -MMD
-CFLAGS = -Wall -Wextra -std=c99 -g
-LDFLAGS =
-LDLIBS= `pkg-config gtk+-3.0 --libs sdl` -lSDL_image -lm
+CFLAGS = -Wall -Wextra -std=c99 -g -export-dynamic
+LDFLAGS = -rdynamic
+LDLIBS= `pkg-config gtk+-3.0 --libs sdl` -lSDL_image -lm 
 
 SRC = main.c treatment/treatment.c tools/tools.c tools/display_tools.c	CharDetection/CharDetection.c neural_network/neural_network_XOR.c neural_network/neural_Tools.c neural_network/neural_network.c  neural_network/neural_network_char.c Graphic/graphic.c
 
