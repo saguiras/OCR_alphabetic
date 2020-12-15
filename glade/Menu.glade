@@ -3,6 +3,8 @@
 <interface>
   <requires lib="gtk+" version="3.24"/>
   <object class="GtkWindow" id="Menu">
+    <property name="width_request">720</property>
+    <property name="height_request">480</property>
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">Menu</property>
     <property name="window_position">center</property>
@@ -49,25 +51,10 @@
           </packing>
         </child>
         <child>
-          <object class="GtkButton" id="Manual">
-            <property name="label" translatable="yes">Manual</property>
-            <property name="width_request">200</property>
-            <property name="height_request">80</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <signal name="clicked" handler="on_Manual_clicked" swapped="no"/>
-          </object>
-          <packing>
-            <property name="x">260</property>
-            <property name="y">75</property>
-          </packing>
-        </child>
-        <child>
           <object class="GtkButton" id="automatic">
             <property name="label" translatable="yes">Automatic</property>
             <property name="width_request">200</property>
-            <property name="height_request">80</property>
+            <property name="height_request">208</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
@@ -75,7 +62,7 @@
           </object>
           <packing>
             <property name="x">260</property>
-            <property name="y">187</property>
+            <property name="y">59</property>
           </packing>
         </child>
         <child>

@@ -63,17 +63,23 @@ void on_automatic_clicked(){
 void on_launch_automatic_clicked(){
     GtkBuilder *builder;
     GtkWidget  *result;
+    //GtkWidget  *textbox;
+    //GtkWidget  *textbuffer;
     
 
     builder = gtk_builder_new_from_file("glade/result.glade");
     result = GTK_WIDGET(gtk_builder_get_object(builder, "result"));
-    
+    //textbox = GTK_WIDGET(gtk_builder_get_object(builder,"textbox"));
+    //textbuffer = GTK_WIDGET(gtk_builder_get_object(builder,"textbuffer1"));
 
 
 
     gtk_builder_connect_signals(builder, NULL);
     g_object_unref(builder);
     gtk_widget_show(result);
+
+    //gtk_text_buffer_set_text(textbuffer,,-1);
+
 
 }
 
