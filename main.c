@@ -10,6 +10,7 @@
 #include "tools/display_tools.h"
 #include "Graphic/graphic.h"
 #include "neural_network/neural_network.h"
+#include "dictionary.h"
 
 void help()
 {
@@ -257,7 +258,11 @@ int main(int argc, char** argv)
             if (!strcmp(argv[2], "ocr"))
             {
 
-                printf("%s",launchOCR(img));
+                put_in_file(launchOCR(img),"out_text.txt");
+
+                first_file("out_text.txt");
+
+                printf("%s",from_file("c_out_text.txt"));
 
                 display_image(img);
                 wait_for_keypressed();
